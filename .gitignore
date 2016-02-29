@@ -37,5 +37,6 @@ com_crashlytics_export_strings.xml
 idea-gitignore.jar
 resources/templates.list
 build/
+.gradle
 build.properties
 junit*.properties
