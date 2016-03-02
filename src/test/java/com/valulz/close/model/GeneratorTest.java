@@ -157,7 +157,26 @@ public class GeneratorTest {
 
         //Then
         assertThat(items).isEqualTo(expected);
-
     }
 
+    @Test
+    public void genNewItemSet_returns_null_if_generators_and_given_item_set_different() throws Exception {
+        //Given
+        Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");
+
+        SortedSet<Item> gene = new TreeSet<>();
+        gene.add(a); gene.add(b);
+
+        SortedSet<Item> para = new TreeSet<>();
+        para.add(b); para.add(c);
+
+        Generator generator = new Generator(gene, new TreeSet<>());
+
+        //When
+        final SortedSet<Item> items = generator.genNewItemSet(para);
+
+        //Then
+        assertThat(items).isEqualTo(null);
+
+    }
 }
