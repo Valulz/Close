@@ -2,9 +2,12 @@ package com.valulz.close.model;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Random;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class GeneratorTest {
 
@@ -133,20 +136,6 @@ public class GeneratorTest {
         }
     }
 
-
-    @Test
-    //TODO Redo
-    public void getNewItemSet_return_empty_set_if_size_equals_zero() throws Exception {
-        //Given
-        Generator generator = new Generator(new TreeSet<>(), new TreeSet<>());
-
-        //When
-        final SortedSet<Item> items = generator.genNewItemSet(new TreeSet<>());
-
-        //Then
-        assertThat(items).isEmpty();
-    }
-
     @Test
     public void getNewItemSet_return_intersection_of_two_itemSet_of_size_1() throws Exception {
         //Given
@@ -171,66 +160,4 @@ public class GeneratorTest {
 
     }
 
-    @Test
-    public void getNewItemSet_return_intersection_of_two_itemSet() throws Exception {
-        //Given
-        Item a = new Item("a"), b=new Item("b"), c=new Item("c");
-
-        SortedSet<Item> gene = new TreeSet<>();
-        gene.add(a); gene.add(b);
-
-        SortedSet<Item> para = new TreeSet<>();
-        para.add(a); para.add(c);
-
-        SortedSet<Item> expected = new TreeSet<>();
-        expected.add(a); expected.add(b); expected.add(c);
-
-        Generator generator = new Generator(gene, new TreeSet<>());
-
-        //When
-        final SortedSet<Item> items = generator.genNewItemSet(para);
-
-        //Then
-        assertThat(items).isEqualTo(expected);
-    }
-
-
-    @Test
-    public void getNewItemSet_return_intersection_of_2_itemSet_on_random_words() throws Exception {
-        //Given
-        List<Item> items = new ArrayList<>();
-        Random random = new Random();
-        int countItem = random.nextInt(50)+100;
-
-        while(items.size() < countItem){
-            String word = "";
-            int wordSize = random.nextInt(10) + 5;
-            for(int i =0; i<wordSize; i++){
-                word += (char) ('a' + random.nextInt(26));
-            }
-            items.add(new Item(word));
-        }
-
-        Collections.sort(items);
-
-        SortedSet<Item> expected = new TreeSet<>(items);
-
-        Item i2 = items.remove(items.size()-1);
-        Item i1 = items.remove(items.size()-1);
-
-        SortedSet<Item> gene = new TreeSet<>(items);
-        gene.add(i1);
-
-        SortedSet<Item> para = new TreeSet<>(items);
-        para.add(i2);
-
-        Generator generator = new Generator(gene, new TreeSet<>());
-
-        //When
-        final SortedSet<Item> newItem = generator.genNewItemSet(para);
-
-        //Then
-        assertThat(newItem).isEqualTo(expected);
-
-    }
 }
