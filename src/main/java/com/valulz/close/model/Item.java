@@ -3,7 +3,7 @@ package com.valulz.close.model;
 /**
  * The class represents an item.
  */
-public class Item {
+public class Item implements Comparable<Item> {
     private String name;
 
     public Item(String name) {
@@ -35,5 +35,10 @@ public class Item {
             throw new IllegalArgumentException("The name of the item must not be null");
         }
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        return this.name.compareTo(o.name);
     }
 }

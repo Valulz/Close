@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: "jacoco"
 
 repositories {
     jcenter()
@@ -6,4 +7,5 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.3.0'
 }
