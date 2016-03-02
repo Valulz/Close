@@ -105,7 +105,7 @@ public class GeneratorTest {
     }
 
     @Test
-    public void genNewItemSet_fail_if_the_itemSet_is_null() throws Exception {
+    public void genNewItemSet_fail_if_the_item_set_is_null() throws Exception {
         //Given
         Generator generator = new Generator(new TreeSet<>(), new TreeSet<>());
 
@@ -119,7 +119,7 @@ public class GeneratorTest {
     }
 
     @Test
-    public void getNewItemSet_fail_if_the_size_of_the_itemSet_is_different_from_the_generator_size() throws Exception {
+    public void getNewItemSet_fail_if_the_size_of_the_item_set_is_different_from_the_generator_size() throws Exception {
         //Given
         SortedSet<Item> gen = new TreeSet<>();
         gen.add(new Item("LOL"));
@@ -137,7 +137,7 @@ public class GeneratorTest {
     }
 
     @Test
-    public void getNewItemSet_return_intersection_of_two_itemSet_of_size_1() throws Exception {
+    public void getNewItemSet_return_intersection_of_two_item_set_of_size_1() throws Exception {
         //Given
         Item a = new Item("a"); Item b = new Item("b");
 
@@ -177,6 +177,29 @@ public class GeneratorTest {
 
         //Then
         assertThat(items).isEqualTo(null);
+    }
+
+    @Test
+    public void genNewItemSet_return_the_concatenation_of_generators_and_the_given_item_set() throws Exception {
+        //Given
+        Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");Item d = new Item("d");
+
+        SortedSet<Item> gene = new TreeSet<>();
+        gene.add(a); gene.add(b); gene.add(c);
+
+        SortedSet<Item> para = new TreeSet<>();
+        para.add(a); para.add(b); para.add(d);
+
+        SortedSet<Item> expected = new TreeSet<>();
+        expected.add(a);expected.add(b);expected.add(c);expected.add(d);
+
+        Generator generator = new Generator(gene, new TreeSet<>());
+
+        //When
+        final SortedSet<Item> items = generator.genNewItemSet(para);
+
+        //Then
+        assertThat(items).isEqualTo(expected);
 
     }
 }

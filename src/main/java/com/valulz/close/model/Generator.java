@@ -1,6 +1,9 @@
 package com.valulz.close.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.IntStream;
 
 /**
@@ -36,7 +39,6 @@ public class Generator  {
         ferme.retainAll(itemSet);
     }
 
-    //TODO remove size; generators.size is good nough
     public SortedSet<Item> genNewItemSet(SortedSet<Item> itemSet){
 
         if(itemSet == null || itemSet.size() != generators.size()){
@@ -51,13 +53,11 @@ public class Generator  {
             return items;
         }
 
-
         List<Item> lGen = new ArrayList<>(generators);
         List<Item> lSet = new ArrayList<>(itemSet);
         int size = generators.size();
 
-        boolean isSimilar = IntStream.range(0, size).allMatch(i -> lGen.get(i).equals(lSet.get(i)));
-
+        boolean isSimilar = IntStream.range(0, size-1).parallel().allMatch(i -> lGen.get(i).equals(lSet.get(i)));
 
         if(isSimilar){
             SortedSet<Item> items = new TreeSet<>(generators);
