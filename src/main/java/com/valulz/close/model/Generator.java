@@ -33,8 +33,6 @@ public class Generator  {
             throw new IllegalArgumentException("The given itemSet cannot be null");
         }
 
-        SortedSet<Item> save = new TreeSet<>(ferme);
-
         encounter++;
         ferme.retainAll(itemSet);
     }
