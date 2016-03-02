@@ -8,16 +8,17 @@ import java.util.stream.Collectors;
 
 public class Close {
 
-    public List<Generator> fermeture(List<SortedSet<Item>> candidates, List<SortedSet<Item>> listItems){
+    public List<Generator> closure(List<SortedSet<Item>> candidates, List<SortedSet<Item>> listItems){
 
         List<Generator> generators = new ArrayList<>();
 
         candidates.forEach(candidate -> {
-            List<SortedSet<Item>> fermes = listItems.stream().filter(i -> i.containsAll(candidate)).collect(Collectors.toList());
+            List<SortedSet<Item>> close = listItems.stream().filter(items -> items.containsAll(candidate)).collect(Collectors.toList());
 
-            if (fermes.size() > 0) {
-                Generator generator = new Generator(new TreeSet<>(candidate), new TreeSet<>(fermes.remove(0)));
-                fermes.forEach(generator::newEncounter);
+            if (close.size() > 0) {
+                Generator generator = new Generator(new TreeSet<>(candidate), new TreeSet<>(close.remove(0)));
+                close.forEach(generator::newEncounter);
+
                 generators.add(generator);
             }
         });

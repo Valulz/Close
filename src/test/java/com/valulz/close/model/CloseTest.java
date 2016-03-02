@@ -11,9 +11,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CloseTest {
 
     @Test
-    public void test_fermeture() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void close_create_generators_from_candidates_given() throws Exception {
         //Given
         Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");Item d=new Item("d");Item e=new Item("e");
+        final int NB_ITEM = 5;
+
+        SortedSet<Item>[] generators = new SortedSet[NB_ITEM];
+        generators[0]=new TreeSet<>(); generators[0].add(a);
+        generators[1]=new TreeSet<>(); generators[1].add(b);
+        generators[2]=new TreeSet<>(); generators[2].add(c);
+        generators[3]=new TreeSet<>(); generators[3].add(d);
+        generators[4]=new TreeSet<>(); generators[4].add(e);
 
         List<SortedSet<Item>> listItems = Lists.newArrayList();
         listItems.add(new TreeSet<>(Sets.newLinkedHashSet(a, c, d)));
@@ -24,35 +33,33 @@ public class CloseTest {
         listItems.add(new TreeSet<>(Sets.newLinkedHashSet(b, c, e)));
 
         List<SortedSet<Item>> candidates = Lists.newArrayList();
-        candidates.add(new TreeSet<>(Sets.newLinkedHashSet(a)));
-        candidates.add(new TreeSet<>(Sets.newLinkedHashSet(b)));
-        candidates.add(new TreeSet<>(Sets.newLinkedHashSet(c)));
-        candidates.add(new TreeSet<>(Sets.newLinkedHashSet(d)));
-        candidates.add(new TreeSet<>(Sets.newLinkedHashSet(e)));
+        for(SortedSet<Item> item : generators){
+            candidates.add(new TreeSet<>(item));
+        }
 
-        List<Generator> expected = Lists.newArrayList();
-        expected.add(new Generator(new TreeSet<>(Sets.newLinkedHashSet(a)), new TreeSet<>(Sets.newLinkedHashSet(a, c))));
-        expected.add(new Generator(new TreeSet<>(Sets.newLinkedHashSet(b)), new TreeSet<>(Sets.newLinkedHashSet(b, e))));
-        expected.add(new Generator(new TreeSet<>(Sets.newLinkedHashSet(c)), new TreeSet<>(Sets.newLinkedHashSet(c))));
-        expected.add(new Generator(new TreeSet<>(Sets.newLinkedHashSet(d)), new TreeSet<>(Sets.newLinkedHashSet(a, c, d))));
-        expected.add(new Generator(new TreeSet<>(Sets.newLinkedHashSet(e)), new TreeSet<>(Sets.newLinkedHashSet(b, e))));
+        SortedSet<Item>[] closes = new SortedSet[NB_ITEM];
+        closes[0]=new TreeSet<>(); closes[0].add(a); closes[0].add(c);
+        closes[1]=new TreeSet<>(); closes[1].add(b); closes[1].add(e);
+        closes[2]=new TreeSet<>(); closes[2].add(c);
+        closes[3]=new TreeSet<>(); closes[3].add(a); closes[3].add(c); closes[3].add(d);
+        closes[4]=new TreeSet<>(); closes[4].add(b); closes[4].add(e);
 
-        int[] exEncounter = new int[]{3, 5, 5, 1, 5};
+        int[] encounters = new int[]{3, 5, 5, 1, 5};
 
         Comparator<Generator> comparator = (o1, o2) -> o1.getGenerators().first().compareTo(o2.getGenerators().first());
 
         Close close = new Close();
 
         //When
-        List<Generator> result = close.fermeture(candidates, listItems);
+        List<Generator> result = close.closure(candidates, listItems);
 
         //Then
         Collections.sort(result, comparator);
 
         for(int i = 0; i<result.size(); i++){
-            assertThat(result.get(i).getGenerators()).isEqualTo(expected.get(i).getGenerators());
-            assertThat(result.get(i).getFerme()).isEqualTo(expected.get(i).getFerme());
-            assertThat(result.get(i).getEncounter()).isEqualTo(exEncounter[i]);
+            assertThat(result.get(i).getGenerators()).isEqualTo(generators[i]);
+            assertThat(result.get(i).getFerme()).isEqualTo(closes[i]);
+            assertThat(result.get(i).getEncounter()).isEqualTo(encounters[i]);
         }
     }
 }
