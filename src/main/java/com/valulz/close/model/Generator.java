@@ -15,7 +15,6 @@ public class Generator  {
     private SortedSet<Item> ferme;
     private int encounter;
 
-    //TODO should check if generators or ferme size >0
     public Generator(SortedSet<Item> generators, SortedSet<Item> ferme) {
 
         if(generators == null || ferme == null){
@@ -35,6 +34,10 @@ public class Generator  {
 
         if(itemSet == null){
             throw new IllegalArgumentException("The given itemSet cannot be null");
+        }
+
+        if(itemSet.size() <= 0){
+            throw new IllegalArgumentException("The given itemSet must have at least one element");
         }
 
         encounter++;

@@ -113,6 +113,24 @@ public class GeneratorTest {
     }
 
     @Test
+    public void newEncounter_fail_if_the_parameter_is_empty() throws Exception {
+        //Given
+        SortedSet<Item> items = new TreeSet<>();
+        items.add(new Item("a"));
+        Generator gen = new Generator(items, items);
+
+        try{
+            //When
+            gen.newEncounter(new TreeSet<>());
+            fail("The newEncounter method should have fail because of the empty parameter");
+        } catch(IllegalArgumentException ex){
+
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("The given itemSet must have at least one element");
+        }
+    }
+
+    @Test
     public void newEncounter_increments_encounter_and_change_ferme() throws Exception {
         //Given
         SortedSet<Item> items = new TreeSet<>();
