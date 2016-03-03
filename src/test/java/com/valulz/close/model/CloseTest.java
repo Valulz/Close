@@ -55,8 +55,25 @@ public class CloseTest {
 
         //When
         try {
-            close.closure(Lists.newArrayList(), Lists.newArrayList(set, null));
+            close.closure(Lists.emptyList(), Lists.newArrayList(set, null));
             fail("Closure cannot have an empty candidate parameter");
+        }catch (IllegalArgumentException ignore){
+            //Then
+        }
+    }
+
+    @Test
+    public void closure_cannot_have_an_empty_list_item_parameter() throws Exception {
+        //Given
+        SortedSet<Item> set = new TreeSet<>();
+        set.add(new Item("a"));
+
+        Close close = new Close();
+
+        //When
+        try {
+            close.closure(Lists.newArrayList(set, null), Lists.emptyList());
+            fail("Closure cannot have an empty listItem parameter");
         }catch (IllegalArgumentException ignore){
             //Then
         }
