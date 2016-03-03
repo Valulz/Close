@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class Close {
 
+    //TODO test entries null and null
     public List<Generator> closure(List<SortedSet<Item>> candidates, List<SortedSet<Item>> listItems){
 
         List<Generator> generators = new ArrayList<>();

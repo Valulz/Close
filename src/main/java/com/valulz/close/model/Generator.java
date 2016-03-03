@@ -22,6 +22,10 @@ public class Generator  {
             throw new IllegalArgumentException("Generators and ferme cannot be null");
         }
 
+        if(generators.size()<=0 || ferme.size() <=0){
+            throw new IllegalArgumentException("Both Sets must have at least one item");
+        }
+
         this.generators = generators;
         this.ferme = ferme;
         this.encounter = 1;
