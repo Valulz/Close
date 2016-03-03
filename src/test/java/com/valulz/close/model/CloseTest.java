@@ -26,8 +26,26 @@ public class CloseTest {
         }catch (IllegalArgumentException ignore){
             //Then
         }
-
     }
+
+    @Test
+    public void closure_cannot_have_a_null_list_item() throws Exception {
+        //Given
+        SortedSet<Item> set = new TreeSet<>();
+        set.add(new Item("a"));
+
+        Close close = new Close();
+
+        //When
+        try {
+            close.closure(Lists.newArrayList(set, null), null);
+            fail("Closure cannot have a null list item parameter");
+        }catch (IllegalArgumentException ignore){
+            //Then
+        }
+    }
+
+
 
     @Test
     @SuppressWarnings("unchecked")
