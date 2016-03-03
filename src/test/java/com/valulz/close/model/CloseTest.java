@@ -22,7 +22,7 @@ public class CloseTest {
         //When
         try {
             close.closure(null, Lists.newArrayList(set, null));
-            fail("Closure cannot have a null generator parameter");
+            fail("Closure cannot have a null candidate parameter");
         }catch (IllegalArgumentException ignore){
             //Then
         }
@@ -45,7 +45,22 @@ public class CloseTest {
         }
     }
 
+    @Test
+    public void closure_cannot_have_an_empty_candidate_parameter() throws Exception {
+        //Given
+        SortedSet<Item> set = new TreeSet<>();
+        set.add(new Item("a"));
 
+        Close close = new Close();
+
+        //When
+        try {
+            close.closure(Lists.newArrayList(), Lists.newArrayList(set, null));
+            fail("Closure cannot have an empty candidate parameter");
+        }catch (IllegalArgumentException ignore){
+            //Then
+        }
+    }
 
     @Test
     @SuppressWarnings("unchecked")
