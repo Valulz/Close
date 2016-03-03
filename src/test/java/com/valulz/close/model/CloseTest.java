@@ -7,8 +7,27 @@ import org.junit.Test;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class CloseTest {
+
+    @Test
+    public void closure_cannot_have_a_null_candidate() throws Exception {
+        //Given
+        SortedSet<Item> set = new TreeSet<>();
+        set.add(new Item("a"));
+
+        Close close = new Close();
+
+        //When
+        try {
+            close.closure(null, Lists.newArrayList(set, null));
+            fail("Closure cannot have a null generator parameter");
+        }catch (IllegalArgumentException ignore){
+            //Then
+        }
+
+    }
 
     @Test
     @SuppressWarnings("unchecked")

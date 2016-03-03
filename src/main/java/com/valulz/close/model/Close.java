@@ -11,6 +11,14 @@ public class Close {
     //TODO test entries null and null
     public List<Generator> closure(List<SortedSet<Item>> candidates, List<SortedSet<Item>> listItems){
 
+        if(candidates == null || listItems == null){
+            throw new IllegalArgumentException();
+        }
+
+        if(candidates.size() <= 0 || listItems.size() <= 0){
+            throw new IllegalArgumentException();
+        }
+
         List<Generator> generators = new ArrayList<>();
 
         candidates.forEach(candidate -> {
