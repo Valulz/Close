@@ -111,4 +111,32 @@ public class ItemSetTest {
         //Then
         assertThat(compareTo).isEqualTo(-1);
     }
+
+    @Test
+    public void compareTo_return_1_if_the_given_set_is_smaller_than_the_attribute_one() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet(new Item("a"), new Item("b"));
+        ItemSet compare = new ItemSet(new Item("a"));
+
+        //When
+        final int compareTo = itemSet.compareTo(compare);
+
+        //Then
+        assertThat(compareTo).isEqualTo(1);
+    }
+
+    @Test
+    public void compareTo_return_0_if_the_two_set_are_equal() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet(new Item("a"));
+        ItemSet compare = new ItemSet(new Item("a"));
+
+        //When
+        final int compareTo = itemSet.compareTo(compare);
+
+        //Then
+        assertThat(compareTo).isEqualTo(0);
+        assertThat(itemSet).isEqualTo(compare);
+
+    }
 }
