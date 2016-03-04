@@ -36,5 +36,16 @@ public class ItemSetTest {
         assertThat(itemSet.getItemSet()).isEqualTo(expected);
     }
 
+    @Test
+    public void size_return_the_number_of_item_inside_the_set() throws Exception {
+        //Given
+        Item a = new Item("a"); Item b = new Item("b");
 
+        //When
+        ItemSet itemSet = new ItemSet(a, b);
+
+        //Then
+        assertThat(itemSet.getItemSet().size()).isEqualTo(2);
+
+    }
 }

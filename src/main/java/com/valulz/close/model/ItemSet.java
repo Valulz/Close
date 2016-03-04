@@ -17,6 +17,13 @@ public class ItemSet {
         Collections.addAll(itemSet, items);
     }
 
+    public int size(){
+        return itemSet.size();
+    }
+
+
+
+
     public SortedSet<Item> getItemSet() {
         return itemSet;
     }
