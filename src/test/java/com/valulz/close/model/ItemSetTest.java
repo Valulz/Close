@@ -151,4 +151,19 @@ public class ItemSetTest {
         //Then
         assertThat(compareTo).isGreaterThan(0);
     }
+
+    @Test
+    public void compareTo_return_a_negative_value_if_this_is_lexicographically_lesser_than_the_given_one() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet(new Item("a"), new Item("b"), new Item("d"));
+        ItemSet compare = new ItemSet(new Item("a"), new Item("b"), new Item("z"));
+
+        //When
+        final int compareTo = itemSet.compareTo(compare);
+
+        //Then
+        assertThat(compareTo).isLessThan(0);
+    }
+
+
 }
