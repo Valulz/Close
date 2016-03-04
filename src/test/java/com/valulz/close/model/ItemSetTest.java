@@ -6,6 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ItemSetTest {
 
@@ -83,5 +84,31 @@ public class ItemSetTest {
 
         //Then
         assertThat(isEmpty).isFalse();
+    }
+
+    @Test
+    public void compareTo_fail_if_the_given_parameter_is_null() throws Exception {
+        //Given
+
+        try{
+            //When
+            new ItemSet().compareTo(null);
+            fail("compareTo cannot have a null parameter");
+        }catch (IllegalArgumentException ignore){
+            //Then
+        }
+    }
+
+    @Test
+    public void compareTo_return_minus_1_if_the_given_set_is_larger_than_the_attribute_one() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet(new Item("a"));
+        ItemSet compare = new ItemSet(new Item("a"), new Item("b"));
+
+        //When
+        final int compareTo = itemSet.compareTo(compare);
+
+        //Then
+        assertThat(compareTo).isEqualTo(-1);
     }
 }

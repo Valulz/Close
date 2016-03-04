@@ -1,6 +1,7 @@
 package com.valulz.close.model;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -52,8 +53,22 @@ public class ItemSet implements Comparable<ItemSet>{
 
     @Override
     public int compareTo(ItemSet o) {
+        if(o == null){
+            throw new IllegalArgumentException();
+        }
 
+        if(this.size() != o.size()){
+            return this.size() < o.size() ? -1 : 1;
+        }
 
-        return 0;
+        Iterator<Item> itThis = this.itemSet.iterator();
+        Iterator<Item> itOther = o.itemSet.iterator();
+
+        int compareToItem = 0;
+
+        while(itThis.hasNext() && (compareToItem = itThis.next().compareTo(itOther.next())) == 0);
+
+        return compareToItem;
+
     }
 }
