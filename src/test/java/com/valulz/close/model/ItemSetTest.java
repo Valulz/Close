@@ -37,6 +37,19 @@ public class ItemSetTest {
     }
 
     @Test
+    public void constructor_with_ItemSet_parameter_make_a_copy_of_the_given_parameter() throws Exception {
+        //Given
+        Item a = new Item("a"); Item b = new Item("b");
+        ItemSet expected = new ItemSet(a, b);
+
+        //When
+        ItemSet itemSet = new ItemSet(expected);
+
+        //Then
+        assertThat(itemSet).isEqualTo(expected);
+    }
+
+    @Test
     public void size_return_the_number_of_item_inside_the_set() throws Exception {
         //Given
         Item a = new Item("a"); Item b = new Item("b");
@@ -46,6 +59,5 @@ public class ItemSetTest {
 
         //Then
         assertThat(itemSet.getItemSet().size()).isEqualTo(2);
-
     }
 }
