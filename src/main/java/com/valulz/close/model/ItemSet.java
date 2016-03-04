@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class ItemSet {
+public class ItemSet implements Comparable<ItemSet>{
 
     private SortedSet<Item> itemSet;
 
@@ -25,6 +25,10 @@ public class ItemSet {
         return itemSet.size();
     }
 
+    public boolean isEmpty(){
+        return itemSet.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,7 +45,15 @@ public class ItemSet {
         return itemSet != null ? itemSet.hashCode() : 0;
     }
 
+    //Devrais-je y avoir accès ?
     public SortedSet<Item> getItemSet() {
         return itemSet;
+    }
+
+    @Override
+    public int compareTo(ItemSet o) {
+
+
+        return 0;
     }
 }

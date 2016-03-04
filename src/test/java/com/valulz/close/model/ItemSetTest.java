@@ -58,6 +58,30 @@ public class ItemSetTest {
         ItemSet itemSet = new ItemSet(a, b);
 
         //Then
-        assertThat(itemSet.getItemSet().size()).isEqualTo(2);
+        assertThat(itemSet.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void isEmpty_return_true_if_the_set_contains_no_item() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet();
+
+        //When
+        final boolean isEmpty = itemSet.isEmpty();
+
+        //Then
+        assertThat(isEmpty).isTrue();
+    }
+
+    @Test
+    public void isEmpty_return_false_if_the_set_contains_at_least_one_item() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet(new Item("a"));
+
+        //When
+        final boolean isEmpty = itemSet.isEmpty();
+
+        //Then
+        assertThat(isEmpty).isFalse();
     }
 }
