@@ -34,4 +34,25 @@ public class Close {
         return generators;
     }
 
+    //TODO uncomment when ItemSet class is up
+//    public List<SortedSet<Item>> generator(List<Generator> generatorsK, List<SortedSet<Item>> closure){
+//
+//        List<SortedSet<Item>> generatorsKPlus1 = new ArrayList<>();
+//
+//        for(int i = 0; i<generatorsK.size(); i++){
+//            for(int j = i+1; j<generatorsK.size(); j++){
+//                SortedSet<Item> generator = generatorsK.get(i)
+//                    .genNewItemSet(generatorsK.get(j).getGenerators());
+//
+//                if(generator == null)   break;
+//                if(closure.contains(generator)) continue;
+//
+//                generatorsKPlus1.add(generator);
+//            }
+//        }
+//
+//
+//        return generatorsKPlus1;
+//    }
+
 }
