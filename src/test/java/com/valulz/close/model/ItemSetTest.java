@@ -154,7 +154,109 @@ public class ItemSetTest {
 
         //Then
         assertThat(isAdded).isTrue();
-        assertThat(itemSet.getItemSet().contains(a)).isTrue();
+        assertThat(itemSet.contains(a)).isTrue();
+    }
+
+    @Test
+    public void contains_return_false_if_the_given_item_is_not_present_inside_the_ItemSet() throws Exception {
+        //Given
+        Item a = new Item("a");
+        ItemSet itemSet = new ItemSet();
+
+        //When
+        final boolean isPresent = itemSet.contains(a);
+
+        //Then
+        assertThat(isPresent).isFalse();
+    }
+
+    @Test
+    public void contains_return_true_if_the_given_item_is_already_in_the_ItemSet() throws Exception {
+        //Given
+        Item a = new Item("a");
+        ItemSet itemSet = new ItemSet(a);
+
+        //When
+        final boolean isPresent = itemSet.contains(a);
+
+        //Then
+        assertThat(isPresent).isTrue();
+    }
+
+    @Test
+    public void contains_fail_if_the_given_item_is_null() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet();
+
+        try{
+            itemSet.contains(null);
+            fail("contains should have thrown an IllegalArgumentException because of the null parameter");
+        }catch (IllegalArgumentException ex){
+            assertThat(ex.getMessage()).isEqualTo("The given Item cannot be null");
+        }
+    }
+
+    @Test
+    public void retainAll_fail_if_the_given_parameter_is_null() throws Exception {
+        //Given
+        ItemSet itemSet = new ItemSet();
+
+        try{
+            itemSet.retainAll(null);
+            fail("retainAll should have thrown an IllegalArgumentException because of the null parameter");
+        }catch (IllegalArgumentException ex){
+            assertThat(ex.getMessage()).isEqualTo("The given ItemSet cannot be null");
+        }
+    }
+
+    @Test
+    public void retainAll_returns_true_if_the_ItemSet_had_changed() throws Exception {
+        //Given
+        Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");
+
+        ItemSet itemSet = new ItemSet(a, b);
+        ItemSet changer = new ItemSet(a, c);
+        ItemSet expected = new ItemSet(a);
+
+        //When
+        final boolean hasChanged = itemSet.retainAll(changer);
+
+        //Then
+        assertThat(itemSet).isEqualTo(expected);
+        assertThat(hasChanged).isTrue();
+    }
+
+    @Test
+    public void retainAll_return_false_if_the_ItemSet_had_not_changed() throws Exception {
+        //Given
+        Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");
+
+        ItemSet itemSet = new ItemSet(a);
+        ItemSet changer = new ItemSet(a);
+        ItemSet expected = new ItemSet(a);
+
+        //When
+        final boolean hasChanged = itemSet.retainAll(changer);
+
+        //Then
+        assertThat(itemSet).isEqualTo(expected);
+        assertThat(hasChanged).isFalse();
+    }
+
+    @Test
+    public void if_the_attribute_ItemSet_and_the_given_one_have_nothing_in_common_retainAll_set_the_attribute_to_empty() throws Exception {
+        //Given
+        Item a=new Item("a");Item b=new Item("b");
+
+        ItemSet itemSet = new ItemSet(a);
+        ItemSet changer = new ItemSet(b);
+
+        //When
+        final boolean hasChanged = itemSet.retainAll(changer);
+
+        //Then
+        assertThat(hasChanged).isTrue();
+        assertThat(itemSet.isEmpty()).isTrue();
     }
 
     @Test
@@ -164,7 +266,7 @@ public class ItemSetTest {
         ItemSet itemSet = new ItemSet(a);
 
         //When
-        final boolean isPresent = itemSet.getItemSet().contains(a);
+        final boolean isPresent = itemSet.contains(a);
         final boolean isAdded = itemSet.add(a);
 
         //Then

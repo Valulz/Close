@@ -59,6 +59,19 @@ public class ItemSet implements Comparable<ItemSet>{
         return itemSet.add(item);
     }
 
+    public boolean contains(Item item){
+        if(item == null){
+            throw new IllegalArgumentException("The given Item cannot be null");
+        }
+        return itemSet.contains(item);
+    }
+
+    public boolean retainAll(ItemSet o){
+        if(o == null){
+            throw new IllegalArgumentException("The given ItemSet cannot be null");
+        }
+        return itemSet.retainAll(o.itemSet);
+    }
 
     @Override
     public int compareTo(ItemSet o) {
