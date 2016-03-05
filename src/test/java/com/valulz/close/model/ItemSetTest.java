@@ -130,6 +130,49 @@ public class ItemSetTest {
     }
 
     @Test
+    public void add_fail_if_the_given_item_is_null() throws Exception {
+        //Given
+        ItemSet set = new ItemSet();
+
+        try{
+            //When
+            set.add(null);
+            fail("The ItemSet.add method should have failed because the given Item was null");
+        } catch (IllegalArgumentException ex){
+            assertThat(ex.getMessage()).isEqualTo("Given item cannot be null");
+        }
+    }
+
+    @Test
+    public void add_return_true_if_the_given_item_is_added_to_the_set() throws Exception {
+        //Given
+        Item a = new Item("a");
+        ItemSet itemSet = new ItemSet();
+
+        //When
+        final boolean isAdded = itemSet.add(a);
+
+        //Then
+        assertThat(isAdded).isTrue();
+        assertThat(itemSet.getItemSet().contains(a)).isTrue();
+    }
+
+    @Test
+    public void add_return_false_if_the_given_item_was_already_present_in_the_ItemSet() throws Exception {
+        //Given
+        Item a = new Item("a");
+        ItemSet itemSet = new ItemSet(a);
+
+        //When
+        final boolean isPresent = itemSet.getItemSet().contains(a);
+        final boolean isAdded = itemSet.add(a);
+
+        //Then
+        assertThat(isPresent).isTrue();
+        assertThat(isAdded).isFalse();
+    }
+
+    @Test
     public void compareTo_fail_if_the_given_parameter_is_null() throws Exception {
         //Given
 
