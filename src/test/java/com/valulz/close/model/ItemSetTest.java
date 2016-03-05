@@ -87,6 +87,49 @@ public class ItemSetTest {
     }
 
     @Test
+    public void hashCode_return_same_number_if_two_ItemSet_are_equal() throws Exception {
+        //Given
+        ItemSet i1 = new ItemSet(new Item("a"));
+        ItemSet i2 = new ItemSet(new Item("a"));
+
+        //When
+        final boolean isSameHashCode = i1.hashCode() == i2.hashCode();
+
+        //Then
+        assertThat(isSameHashCode).isTrue();
+        assertThat(i1).isEqualTo(i2);
+    }
+
+    @Test
+    public void hasCode_two_empty_ItemSet_return_the_same_hashCode() throws Exception {
+        //Given
+        ItemSet i1 = new ItemSet();
+        ItemSet i2 = new ItemSet();
+
+        //When
+        final boolean isSameHashCode = i1.hashCode() == i2.hashCode();
+
+        //Then
+        assertThat(isSameHashCode).isTrue();
+        assertThat(i1.isEmpty()).isTrue();
+        assertThat(i2.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void hasCode_return_2_different_number_if_two_ItemSet_are_different() throws Exception {
+        //Given
+        ItemSet i1 = new ItemSet(new Item("a"));
+        ItemSet i2 = new ItemSet();
+
+        //When
+        final boolean isSameHashCode = i1.hashCode() == i2.hashCode();
+
+        //Then
+        assertThat(isSameHashCode).isFalse();
+        assertThat(i1).isNotEqualTo(i2);
+    }
+
+    @Test
     public void compareTo_fail_if_the_given_parameter_is_null() throws Exception {
         //Given
 
@@ -164,6 +207,7 @@ public class ItemSetTest {
         //Then
         assertThat(compareTo).isLessThan(0);
     }
+
 
 
 }

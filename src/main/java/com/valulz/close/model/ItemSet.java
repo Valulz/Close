@@ -37,13 +37,13 @@ public class ItemSet implements Comparable<ItemSet>{
 
         ItemSet itemSet1 = (ItemSet) o;
 
-        return itemSet != null ? itemSet.equals(itemSet1.itemSet) : itemSet1.itemSet == null;
+        return itemSet.equals(itemSet1.itemSet);
 
     }
 
     @Override
     public int hashCode() {
-        return itemSet != null ? itemSet.hashCode() : 0;
+        return itemSet.hashCode();
     }
 
     //Devrais-je y avoir accès ?
@@ -66,9 +66,12 @@ public class ItemSet implements Comparable<ItemSet>{
 
         int compareToItem = 0;
 
-        while(itThis.hasNext() && (compareToItem = itThis.next().compareTo(itOther.next())) == 0);
+        while(itThis.hasNext()){
+            if((compareToItem = itThis.next().compareTo(itOther.next())) != 0){
+                break;
+            }
+        }
 
         return compareToItem;
-
     }
 }
