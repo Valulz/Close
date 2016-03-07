@@ -1,11 +1,19 @@
 package com.valulz.close.model;
 
 /**
- * The class represents an item.
+ * The Item class represents a named item.
+ *
+ * @author Valentin Desportes
  */
-public class Item {
+public class Item implements Comparable<Item> {
+
     private String name;
 
+    /**
+     * Initialize a newly created {@code Item} object with the {@code name} parameter.
+     * @throws IllegalArgumentException if the {@code name} is null.
+     * @param name the name of the Item.
+     */
     public Item(String name) {
         setName(name);
     }
@@ -30,10 +38,27 @@ public class Item {
         return name;
     }
 
+    /**
+     * Replace the Item's name with the one given.
+     * @throws IllegalArgumentException if the {@code name} is null.
+     * @param name the new name of the Item.
+     */
     public void setName(String name) {
         if(name == null){
             throw new IllegalArgumentException("The name of the item must not be null");
         }
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        return this.name.compareTo(o.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }
