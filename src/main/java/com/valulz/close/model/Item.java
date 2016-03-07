@@ -41,4 +41,11 @@ public class Item implements Comparable<Item> {
     public int compareTo(Item o) {
         return this.name.compareTo(o.name);
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

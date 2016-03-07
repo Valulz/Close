@@ -2,7 +2,8 @@ package com.valulz.close.model;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ItemTest {
 
@@ -151,4 +152,15 @@ public class ItemTest {
     }
 
 
+    @Test
+    public void toString_return_the_item_in_a_formatted_form() throws Exception {
+        //Given
+        Item i1 = new Item("Hello");
+
+        //When
+        final String result = i1.toString();
+
+        //Then
+        assertThat(result).isEqualTo("Item{name='Hello'}");
+    }
 }

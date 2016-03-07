@@ -127,4 +127,97 @@ public class CloseTest {
             assertThat(result.get(i).getEncounter()).isEqualTo(encounters[i]);
         }
     }
+
+    @Test
+    public void generateCloseKPlus1_fail_if_the_given_generator_is_null() throws Exception {
+        //Given
+        Close close = new Close();
+
+        try{
+            //When
+            close.generateCloseKPlus1(null, Lists.newArrayList());
+            fail("The method generateCloseKPlus1 should have failed because of the null generator parameter");
+        } catch (IllegalArgumentException ex){
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("Generators and Closure cannot be null");
+        }
+    }
+
+    @Test
+    public void generateCloseKPlus1_fail_if_the_given_closure_is_null() throws Exception {
+        //Given
+        Close close = new Close();
+
+        try{
+            //When
+            close.generateCloseKPlus1(Lists.emptyList(), null);
+            fail("The method generateCloseKPlus1 should have failed because of the null closure parameter");
+        } catch (IllegalArgumentException ex){
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("Generators and Closure cannot be null");
+        }
+    }
+
+    @Test
+    public void generateCloseKPlus1_shall_generate_an_empty_list_if_the_given_generator_is_empty() throws Exception {
+        //Given
+        Close close = new Close();
+        List<ItemSet> closure = Lists.newArrayList();
+        closure.add(new ItemSet(new Item("a")));
+
+        //When
+        final List<ItemSet> generators = close.generateCloseKPlus1(Lists.emptyList(), closure);
+
+        //Then
+        assertThat(generators).isEmpty();
+    }
+
+    @Test
+    public void generateCloseKPlus1_shall_generate_all_ItemSet_from_the_given_generator_if_the_closure_is_empty() throws Exception {
+        //Given
+        Item a = new Item("a");
+        Item b = new Item("b");
+        Item c = new Item("c");
+        Item d = new Item("d");
+
+        Close close = new Close();
+
+        List<Generator> generators = Lists.newArrayList();
+        generators.add(new Generator(new ItemSet(a, b), new ItemSet(a, b)));
+        generators.add(new Generator(new ItemSet(b, c), new ItemSet(b, c)));
+        generators.add(new Generator(new ItemSet(a, c), new ItemSet(a, c)));
+        generators.add(new Generator(new ItemSet(c, d), new ItemSet(c, d)));
+
+        //When
+        final List<ItemSet> itemSets = close.generateCloseKPlus1(generators, Lists.newArrayList());
+
+        //Then
+        assertThat(itemSets).containsExactly(new ItemSet(a, b, c));
+    }
+
+    @Test
+    public void generateCloseKPlus1_generate_an_empty_ItemSet_from_the_given_generator_if_the_closure_already_contains_the_generated_ItemSet() throws Exception {
+        //Given
+        Item a = new Item("a");
+        Item b = new Item("b");
+        Item c = new Item("c");
+        Item d = new Item("d");
+
+        Close close = new Close();
+
+        List<Generator> generators = Lists.newArrayList();
+        generators.add(new Generator(new ItemSet(a, b), new ItemSet(a, b)));
+        generators.add(new Generator(new ItemSet(b, c), new ItemSet(b, c)));
+        generators.add(new Generator(new ItemSet(a, c), new ItemSet(a, c)));
+        generators.add(new Generator(new ItemSet(c, d), new ItemSet(c, d)));
+
+        List<ItemSet> closure = Lists.newArrayList();
+        closure.add(new ItemSet(a, b, c));
+
+        //When
+        final List<ItemSet> itemSets = close.generateCloseKPlus1(generators, closure);
+
+        //Then
+        assertThat(itemSets).isEmpty();
+    }
 }
