@@ -1,8 +1,6 @@
 package com.valulz.close.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Close {
@@ -49,7 +47,16 @@ public class Close {
                     .genNewItemSet(generatorsK.get(j).getGenerators());
 
                 if(generator == null)   break;
-                if(closure.contains(generator)) continue;
+
+                boolean isContained = false;
+                for(ItemSet close : closure){
+                    if(close.containsAll(generator)){
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if(isContained) continue;
 
                 generatorsKPlus1.add(generator);
             }
@@ -57,5 +64,58 @@ public class Close {
 
         return generatorsKPlus1;
     }
+
+
+    public List<Generator> executeAlgorithm(List<ItemSet> corpus, double minSupport){
+
+        if(corpus == null){
+            throw new IllegalArgumentException("Corpus cannot be null");
+        }
+
+        if(minSupport<0 || minSupport >1){
+            throw new IllegalArgumentException("The minimum support has to be between 0 and 1");
+        }
+
+        List<ItemSet> currentGenerators = searchItemInCorpus(corpus);
+        List<Generator> generators = new ArrayList<>();
+        List<ItemSet> closure = new ArrayList<>();
+        int corpusSize = corpus.size();
+
+
+        while(!currentGenerators.isEmpty()){
+            List<Generator> candidates = closure(currentGenerators, corpus);
+            Iterator<Generator> candidatesIterator = candidates.iterator();
+
+            while(candidatesIterator.hasNext()){
+                Generator candidate = candidatesIterator.next();
+                if( ((double) candidate.getEncounter()/corpusSize) >= minSupport){
+                    generators.add(candidate);
+                    closure.add(candidate.getClosure());
+                }else{
+                    candidatesIterator.remove();
+                }
+            }
+
+            currentGenerators = generateCloseKPlus1(candidates, closure);
+        }
+
+        return generators;
+    }
+
+
+    private List<ItemSet> searchItemInCorpus(List<ItemSet> corpus){
+        List<ItemSet> itemSets = new ArrayList<>();
+        SortedSet<Item> items = new TreeSet<>();
+
+        corpus.stream()
+                .filter(itemSet -> !items.containsAll(itemSet))
+                .forEach(itemSet -> items.addAll(itemSet.stream()
+                        .collect(Collectors.toList())));
+
+        itemSets.addAll(items.stream().map(ItemSet::new).collect(Collectors.toList()));
+
+        return itemSets;
+    }
+
 
 }

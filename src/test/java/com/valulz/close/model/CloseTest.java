@@ -220,4 +220,94 @@ public class CloseTest {
         //Then
         assertThat(itemSets).isEmpty();
     }
+
+    @Test
+    public void executeAlgorithm_cannot_have_a_null_corpus_parameter() throws Exception {
+        //Given
+        Close close = new Close();
+
+        try {
+            //When
+            close.executeAlgorithm(null, 0.2);
+            fail("executeAlgorithm should have failed because of the null corpus parameter");
+        } catch (IllegalArgumentException ex){
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("Corpus cannot be null");
+        }
+    }
+
+    @Test
+    public void executeAlgorithm_cannot_have_a_minSupport_lower_than_0() throws Exception {
+        //Given
+        Close close = new Close();
+
+        try {
+            //When
+            close.executeAlgorithm(Lists.newArrayList(), -50);
+            fail("executeAlgorithm should have failed because the minSupport is lower than 0");
+        } catch (IllegalArgumentException ex){
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("The minimum support has to be between 0 and 1");
+        }
+    }
+    @Test
+    public void executeAlgorithm_cannot_have_a_minSupport_greater_than_1() throws Exception {
+        //Given
+        Close close = new Close();
+
+        try {
+            //When
+            close.executeAlgorithm(Lists.newArrayList(), 15);
+            fail("executeAlgorithm should have failed because the minSupport is greater than 1");
+        } catch (IllegalArgumentException ex){
+            //Then
+            assertThat(ex.getMessage()).isEqualTo("The minimum support has to be between 0 and 1");
+        }
+    }
+
+    @Test
+    public void executeAlgorithm_return_the_correct_closure() throws Exception {
+        //Given
+        Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c"); Item d = new Item("d"); Item e = new Item("e");
+
+        List<ItemSet> corpus = Lists.newArrayList();
+        corpus.add(new ItemSet(a, c, d));
+        corpus.add(new ItemSet(b, c, e));
+        corpus.add(new ItemSet(a, b, c, e));
+        corpus.add(new ItemSet(b, e));
+        corpus.add(new ItemSet(a, b, c, e));
+        corpus.add(new ItemSet(b, c, e));
+
+        double minSupport = 2. / 6;
+
+        Close close = new Close();
+
+        List<Generator> expected = Lists.newArrayList();
+        expected.add(new Generator(new ItemSet(a), new ItemSet(a, c)));
+        expected.add(new Generator(new ItemSet(b), new ItemSet(b, e)));
+        expected.add(new Generator(new ItemSet(c), new ItemSet(c)));
+        expected.add(new Generator(new ItemSet(e), new ItemSet(b, e)));
+
+        expected.add(new Generator(new ItemSet(a, b), new ItemSet(a, b, c, e)));
+        expected.add(new Generator(new ItemSet(a, e), new ItemSet(a, b, c, e)));
+        expected.add(new Generator(new ItemSet(b, c), new ItemSet(b, c, e)));
+        expected.add(new Generator(new ItemSet(c, e), new ItemSet(b, c, e)));
+
+        int[] encounters = new int[]{3, 5, 5, 5, 2, 2, 4, 4};
+
+        //When
+        final List<Generator> generators = close.executeAlgorithm(corpus, minSupport);
+
+        //Then
+        Collections.sort(generators, (o1, o2) -> o1.getGenerators().compareTo(o2.getGenerators()));
+        Collections.sort(expected, (o1, o2) -> o1.getGenerators().compareTo(o2.getGenerators()));
+
+        assertThat(generators.size()).isEqualTo(expected.size());
+
+        for(int i = 0; i<generators.size(); i++){
+            assertThat((Iterable<? extends Item>) generators.get(i).getGenerators()).isEqualTo(expected.get(i).getGenerators());
+            assertThat((Iterable<? extends Item>) generators.get(i).getClosure()).isEqualTo(expected.get(i).getClosure());
+            assertThat(generators.get(i).getEncounter()).isEqualTo(encounters[i]);
+        }
+    }
 }
