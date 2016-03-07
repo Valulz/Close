@@ -5,8 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+/**
+ * The ItemSet class represents a set of {@link Item items} object.
+ *
+ * @author Valentin Desportes
+ */
 public class ItemSet extends TreeSet<Item> implements Comparable<ItemSet>{
 
+    /**
+     * Initialize an ItemSet with the items
+     * @throws IllegalArgumentException if one of the items is null
+     * @param items a list of Item
+     */
     public ItemSet(Item... items){
         super();
 
@@ -22,6 +32,11 @@ public class ItemSet extends TreeSet<Item> implements Comparable<ItemSet>{
         addAll(Arrays.asList(items));
     }
 
+    /**
+     * Constructing an ItemSet containing the elements of the specified itemSet.
+     * @param itemSet the ItemSet whose element are to be placed into this set
+     * @throws IllegalArgumentException if the specified itemSet is null
+     */
     public ItemSet(ItemSet itemSet) {
         super();
         if(itemSet == null){

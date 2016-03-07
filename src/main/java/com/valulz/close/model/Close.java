@@ -3,24 +3,35 @@ package com.valulz.close.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The Close class represents the execution of the close algorithm.
+ * @author Valentin Desportes
+ */
 public class Close {
 
-    public List<Generator> closure(List<ItemSet> candidates, List<ItemSet> listItems){
+    /**
+     * This method associate, foreach candidates, its closure, determine from the corpus.
+     * @param candidates the list use to create the generators
+     * @param corpus the list of all the objects
+     * @throws IllegalArgumentException if candidates or listItem are null or empty
+     * @return a list of generators created by the association of the candidates and its closure.
+     */
+    public List<Generator> closure(List<ItemSet> candidates, List<ItemSet> corpus){
 
-        if(candidates == null || listItems == null){
+        if(candidates == null || corpus == null){
             throw new IllegalArgumentException();
         }
 
-        if(candidates.size() <= 0 || listItems.size() <= 0){
+        if(candidates.isEmpty() || corpus.isEmpty()){
             throw new IllegalArgumentException();
         }
 
         List<Generator> generators = new ArrayList<>();
 
         candidates.forEach(candidate -> {
-            List<ItemSet> close = listItems.stream().filter(items -> items.containsAll(candidate)).collect(Collectors.toList());
+            List<ItemSet> close = corpus.stream().filter(items -> items.containsAll(candidate)).collect(Collectors.toList());
 
-            if (close.size() > 0) {
+            if (!close.isEmpty()) {
                 Generator generator = new Generator(new ItemSet(candidate), new ItemSet(close.remove(0)));
                 close.forEach(generator::newEncounter);
 
@@ -31,7 +42,13 @@ public class Close {
         return generators;
     }
 
-    public List<ItemSet> generateCloseKPlus1(List<Generator> generatorsK, List<ItemSet> closure){
+    /**
+     * The method generate from the k generators, the k+1 generators, if the generated one is not already in the closure list.
+     * @param generatorsK the generator of size k
+     * @param closure the list of all the closure found
+     * @return the list of the generator k+1
+     */
+    public List<ItemSet> generateClose(List<Generator> generatorsK, List<ItemSet> closure){
 
         if(generatorsK == null || closure == null){
             throw new IllegalArgumentException("Generators and Closure cannot be null");
@@ -44,7 +61,7 @@ public class Close {
         for(int i = 0; i<generatorsK.size()-1; i++){
             for(int j = i+1; j<generatorsK.size(); j++){
                 ItemSet generator = generatorsK.get(i)
-                    .genNewItemSet(generatorsK.get(j).getGenerators());
+                    .createNewGenerator(generatorsK.get(j).getGenerators());
 
                 if(generator == null)   break;
 
@@ -65,7 +82,12 @@ public class Close {
         return generatorsKPlus1;
     }
 
-
+    /**
+     * Execute the Close Algorithm.
+     * @param corpus the objects which in which we will look up.
+     * @param minSupport the support minimal.
+     * @return a list of generator
+     */
     public List<Generator> executeAlgorithm(List<ItemSet> corpus, double minSupport){
 
         if(corpus == null){
@@ -96,13 +118,17 @@ public class Close {
                 }
             }
 
-            currentGenerators = generateCloseKPlus1(candidates, closure);
+            currentGenerators = generateClose(candidates, closure);
         }
 
         return generators;
     }
 
-
+    /**
+     * Search for the generator of size 1, in the corpus
+     * @param corpus the list of objects
+     * @return the generators of size 1.
+     */
     private List<ItemSet> searchItemInCorpus(List<ItemSet> corpus){
         List<ItemSet> itemSets = new ArrayList<>();
         SortedSet<Item> items = new TreeSet<>();

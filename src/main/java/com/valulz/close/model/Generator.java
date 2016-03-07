@@ -5,7 +5,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * Represents the generator.
+ * The Generator class represents a generator for the Close Algorithm.
+ * A Generator is composed of :
+ * <ul>
+ *     <li>generator represents a set of item</li>
+ *     <li>closure represents an ItemSet which appear in the same objects as the generator</li>
+ *     <li>encounter represents how many times the generator has been found</li>
+ * </ul>
  */
 public class Generator  {
 
@@ -13,6 +19,12 @@ public class Generator  {
     private ItemSet closure;
     private int encounter;
 
+    /**
+     * Initialize a newly created Generator with a generator and closure.
+     * @param generators an ItemSet that represents the generator
+     * @param closure the closure of the generator.
+     * @throws IllegalArgumentException if generators or closure are either null or empty
+     */
     public Generator(ItemSet generators, ItemSet closure) {
 
         if(generators == null || closure == null){
@@ -28,48 +40,53 @@ public class Generator  {
         this.encounter = 1;
     }
 
+    /**
+     * A new encounter make an intersection between the itemSet and the current closure. The number of encounter increments.
+     * @param itemSet an ItemSet
+     * @throws IllegalArgumentException if the ItemSet is null, or does not contain, at least, the generator.
+     */
     public void newEncounter(ItemSet itemSet){
 
         if(itemSet == null){
             throw new IllegalArgumentException("The given itemSet cannot be null");
         }
 
-        if(itemSet.size() <= 0){
-            throw new IllegalArgumentException("The given itemSet must have at least one element");
+        if(!itemSet.containsAll(generators)){
+            throw new IllegalArgumentException("The given itemSet must, at least, have the generator");
         }
 
         encounter++;
         closure.retainAll(itemSet);
     }
 
-    public ItemSet genNewItemSet(ItemSet itemSet){
+    /**
+     * Generate a new generator from the current one and the given itemSet.
+     *
+     * @param itemSet The ItemSet to concat to the generator.
+     * @throws IllegalArgumentException if itemSet is null or empty.
+     * @return the concatenation of the generator and the itemSet, or null if the itemSet does not contain the generator
+     */
+    public ItemSet createNewGenerator(ItemSet itemSet){
 
         if(itemSet == null || itemSet.size() != generators.size()){
             throw new IllegalArgumentException();
         }
 
-        //Just concatenate, nothing in common
-        if(generators.size() == 1){
+        List<Item> listGenerator = new ArrayList<>(generators);
+        List<Item> listItemSet = new ArrayList<>(itemSet);
+
+        boolean hasSimilarBegin = IntStream
+                .range(0, generators.size()-1)
+                .parallel()
+                .allMatch(i -> listGenerator.get(i).equals(listItemSet.get(i)));
+
+        if(hasSimilarBegin){
             ItemSet items = new ItemSet(generators);
             items.add(itemSet.last());
-
             return items;
         }
 
-        List<Item> lGen = new ArrayList<>(generators);
-        List<Item> lSet = new ArrayList<>(itemSet);
-        int size = generators.size();
-
-        boolean isSimilar = IntStream.range(0, size-1).parallel().allMatch(i -> lGen.get(i).equals(lSet.get(i)));
-
-        if(isSimilar){
-            ItemSet items = new ItemSet(generators);
-            items.add(itemSet.last());
-
-            return items;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     public ItemSet getGenerators() {

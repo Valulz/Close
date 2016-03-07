@@ -97,19 +97,20 @@ public class GeneratorTest {
     }
 
     @Test
-    public void newEncounter_fail_if_the_parameter_is_empty() throws Exception {
+    public void newEncounter_fail_if_the_itemSet_does_not_contain_the_generator() throws Exception {
         //Given
-        ItemSet items = new ItemSet(new Item("a"));
+        Item a = new Item("a"); Item b = new Item("b");Item c = new Item("c");
+        ItemSet items = new ItemSet(a, b);
         Generator gen = new Generator(items, items);
 
         try{
             //When
-            gen.newEncounter(new ItemSet());
-            fail("The newEncounter method should have fail because of the empty parameter");
+            gen.newEncounter(new ItemSet(c));
+            fail("The newEncounter method should have fail because of the itemSet does not contain the generator");
         } catch(IllegalArgumentException ex){
 
             //Then
-            assertThat(ex.getMessage()).isEqualTo("The given itemSet must have at least one element");
+            assertThat(ex.getMessage()).isEqualTo("The given itemSet must, at least, have the generator");
         }
     }
 
@@ -125,7 +126,7 @@ public class GeneratorTest {
         ItemSet parameter = new ItemSet(i1,i3,i4);
         ItemSet expected = new ItemSet(i1, i4);
 
-        Generator gen = new Generator(new ItemSet(new Item("a")), given);
+        Generator gen = new Generator(new ItemSet(i1, i4), given);
 
         //When
         gen.newEncounter(parameter);
@@ -136,37 +137,37 @@ public class GeneratorTest {
     }
 
     @Test
-    public void genNewItemSet_fail_if_the_item_set_is_null() throws Exception {
+    public void createNewGenerator_fail_if_the_item_set_is_null() throws Exception {
         //Given
         ItemSet items = new ItemSet(new Item("a"));
         Generator generator = new Generator(items, items);
 
         try{
             //When
-            generator.genNewItemSet(null);
-            fail("getNewItemSet should have failed because of the null parameter");
+            generator.createNewGenerator(null);
+            fail("createNewGenerator should have failed because of the null parameter");
         } catch (IllegalArgumentException ignored){
             //Then
         }
     }
 
     @Test
-    public void getNewItemSet_fail_if_the_size_of_the_item_set_is_different_from_the_generator_size() throws Exception {
+    public void createNewGenerator_fail_if_the_size_of_the_item_set_is_different_from_the_generator_size() throws Exception {
         //Given
         ItemSet gen = new ItemSet(new Item("LOL"));
         Generator generator = new Generator(gen, gen);
 
         try {
             //When
-            generator.genNewItemSet(new ItemSet());
-            fail("getNewItemSet should have failed because the generator and the itemSet have two different size");
+            generator.createNewGenerator(new ItemSet());
+            fail("createNewGenerator should have failed because the generator and the itemSet have two different size");
         }catch (IllegalArgumentException ignored){
             //Then
         }
     }
 
     @Test
-    public void getNewItemSet_return_intersection_of_two_item_set_of_size_1() throws Exception {
+    public void createNewGenerator_return_intersection_of_two_item_set_of_size_1() throws Exception {
         //Given
         Item a = new Item("a"); Item b = new Item("b");
 
@@ -178,14 +179,14 @@ public class GeneratorTest {
         Generator generator = new Generator(gene, closure);
 
         //When
-        final ItemSet items = generator.genNewItemSet(para);
+        final ItemSet items = generator.createNewGenerator(para);
 
         //Then
         assertThat((Iterable<? extends Item>) items).isEqualTo(expected);
     }
 
     @Test
-    public void genNewItemSet_returns_null_if_generators_and_given_item_set_different() throws Exception {
+    public void createNewGenerator_returns_null_if_generators_and_given_item_set_different() throws Exception {
         //Given
         Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");
 
@@ -195,14 +196,14 @@ public class GeneratorTest {
         Generator generator = new Generator(gene, new ItemSet(a));
 
         //When
-        final ItemSet items = generator.genNewItemSet(para);
+        final ItemSet items = generator.createNewGenerator(para);
 
         //Then
         assertThat((Iterable<? extends Item>) items).isEqualTo(null);
     }
 
     @Test
-    public void genNewItemSet_return_the_concatenation_of_generators_and_the_given_item_set() throws Exception {
+    public void createNewGenerator_return_the_concatenation_of_generators_and_the_given_item_set() throws Exception {
         //Given
         Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");Item d = new Item("d");
 
@@ -213,7 +214,7 @@ public class GeneratorTest {
         Generator generator = new Generator(gene, new ItemSet(a));
 
         //When
-        final ItemSet items = generator.genNewItemSet(para);
+        final ItemSet items = generator.createNewGenerator(para);
 
         //Then
         assertThat((Iterable<? extends Item>) items).isEqualTo(expected);

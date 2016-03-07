@@ -77,7 +77,7 @@ public class CloseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void close_create_generators_from_candidates_given() throws Exception {
+    public void closure_create_generators_from_candidates_given() throws Exception {
         //Given
         Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");Item d=new Item("d");Item e=new Item("e");
         final int NB_ITEM = 5;
@@ -129,14 +129,14 @@ public class CloseTest {
     }
 
     @Test
-    public void generateCloseKPlus1_fail_if_the_given_generator_is_null() throws Exception {
+    public void generateClose_fail_if_the_given_generator_is_null() throws Exception {
         //Given
         Close close = new Close();
 
         try{
             //When
-            close.generateCloseKPlus1(null, Lists.newArrayList());
-            fail("The method generateCloseKPlus1 should have failed because of the null generator parameter");
+            close.generateClose(null, Lists.newArrayList());
+            fail("The method generateClose should have failed because of the null generator parameter");
         } catch (IllegalArgumentException ex){
             //Then
             assertThat(ex.getMessage()).isEqualTo("Generators and Closure cannot be null");
@@ -144,14 +144,14 @@ public class CloseTest {
     }
 
     @Test
-    public void generateCloseKPlus1_fail_if_the_given_closure_is_null() throws Exception {
+    public void generateClose_fail_if_the_given_closure_is_null() throws Exception {
         //Given
         Close close = new Close();
 
         try{
             //When
-            close.generateCloseKPlus1(Lists.emptyList(), null);
-            fail("The method generateCloseKPlus1 should have failed because of the null closure parameter");
+            close.generateClose(Lists.emptyList(), null);
+            fail("The method generateClose should have failed because of the null closure parameter");
         } catch (IllegalArgumentException ex){
             //Then
             assertThat(ex.getMessage()).isEqualTo("Generators and Closure cannot be null");
@@ -159,21 +159,21 @@ public class CloseTest {
     }
 
     @Test
-    public void generateCloseKPlus1_shall_generate_an_empty_list_if_the_given_generator_is_empty() throws Exception {
+    public void generateClose_shall_generate_an_empty_list_if_the_given_generator_is_empty() throws Exception {
         //Given
         Close close = new Close();
         List<ItemSet> closure = Lists.newArrayList();
         closure.add(new ItemSet(new Item("a")));
 
         //When
-        final List<ItemSet> generators = close.generateCloseKPlus1(Lists.emptyList(), closure);
+        final List<ItemSet> generators = close.generateClose(Lists.emptyList(), closure);
 
         //Then
         assertThat(generators).isEmpty();
     }
 
     @Test
-    public void generateCloseKPlus1_shall_generate_all_ItemSet_from_the_given_generator_if_the_closure_is_empty() throws Exception {
+    public void generateClose_shall_generate_all_ItemSet_from_the_given_generator_if_the_closure_is_empty() throws Exception {
         //Given
         Item a = new Item("a");
         Item b = new Item("b");
@@ -189,14 +189,14 @@ public class CloseTest {
         generators.add(new Generator(new ItemSet(a, c), new ItemSet(a, c)));
 
         //When
-        final List<ItemSet> itemSets = close.generateCloseKPlus1(generators, Lists.newArrayList());
+        final List<ItemSet> itemSets = close.generateClose(generators, Lists.newArrayList());
 
         //Then
         assertThat(itemSets).containsExactly(new ItemSet(b, c, d));
     }
 
     @Test
-    public void generateCloseKPlus1_generate_an_empty_ItemSet_from_the_given_generator_if_the_closure_already_contains_the_generated_ItemSet() throws Exception {
+    public void generateClose_generate_an_empty_ItemSet_from_the_given_generator_if_the_closure_already_contains_the_generated_ItemSet() throws Exception {
         //Given
         Item a = new Item("a");
         Item b = new Item("b");
@@ -215,7 +215,7 @@ public class CloseTest {
         closure.add(new ItemSet(a, b, c));
 
         //When
-        final List<ItemSet> itemSets = close.generateCloseKPlus1(generators, closure);
+        final List<ItemSet> itemSets = close.generateClose(generators, closure);
 
         //Then
         assertThat(itemSets).isEmpty();
@@ -263,6 +263,7 @@ public class CloseTest {
             //Then
             assertThat(ex.getMessage()).isEqualTo("The minimum support has to be between 0 and 1");
         }
+
     }
 
     @Test
