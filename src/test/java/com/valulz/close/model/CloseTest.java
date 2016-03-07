@@ -1,10 +1,11 @@
 package com.valulz.close.model;
 
 import org.assertj.core.util.Lists;
-import org.assertj.core.util.Sets;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -14,8 +15,7 @@ public class CloseTest {
     @Test
     public void closure_cannot_have_a_null_candidate() throws Exception {
         //Given
-        SortedSet<Item> set = new TreeSet<>();
-        set.add(new Item("a"));
+        ItemSet set = new ItemSet(new Item("a"));
 
         Close close = new Close();
 
@@ -31,9 +31,7 @@ public class CloseTest {
     @Test
     public void closure_cannot_have_a_null_list_item() throws Exception {
         //Given
-        SortedSet<Item> set = new TreeSet<>();
-        set.add(new Item("a"));
-
+        ItemSet set = new ItemSet(new Item("a"));
         Close close = new Close();
 
         //When
@@ -48,8 +46,7 @@ public class CloseTest {
     @Test
     public void closure_cannot_have_an_empty_candidate_parameter() throws Exception {
         //Given
-        SortedSet<Item> set = new TreeSet<>();
-        set.add(new Item("a"));
+        ItemSet set = new ItemSet(new Item("a"));
 
         Close close = new Close();
 
@@ -65,8 +62,7 @@ public class CloseTest {
     @Test
     public void closure_cannot_have_an_empty_list_item_parameter() throws Exception {
         //Given
-        SortedSet<Item> set = new TreeSet<>();
-        set.add(new Item("a"));
+        ItemSet set = new ItemSet(new Item("a"));
 
         Close close = new Close();
 
@@ -86,32 +82,32 @@ public class CloseTest {
         Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");Item d=new Item("d");Item e=new Item("e");
         final int NB_ITEM = 5;
 
-        SortedSet<Item>[] generators = new SortedSet[NB_ITEM];
-        generators[0]=new TreeSet<>(); generators[0].add(a);
-        generators[1]=new TreeSet<>(); generators[1].add(b);
-        generators[2]=new TreeSet<>(); generators[2].add(c);
-        generators[3]=new TreeSet<>(); generators[3].add(d);
-        generators[4]=new TreeSet<>(); generators[4].add(e);
+        ItemSet[] generators = new ItemSet[NB_ITEM];
+        generators[0]=new ItemSet(a);
+        generators[1]=new ItemSet(b);
+        generators[2]=new ItemSet(c);
+        generators[3]=new ItemSet(d);
+        generators[4]=new ItemSet(e);
 
-        List<SortedSet<Item>> listItems = Lists.newArrayList();
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(a, c, d)));
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(b, c, e)));
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(a, b, c, e)));
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(b, e)));
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(a, b, c, e)));
-        listItems.add(new TreeSet<>(Sets.newLinkedHashSet(b, c, e)));
+        List<ItemSet> listItems = Lists.newArrayList();
+        listItems.add(new ItemSet(a, c, d));
+        listItems.add(new ItemSet(b, c, e));
+        listItems.add(new ItemSet(a, b, c, e));
+        listItems.add(new ItemSet(b, e));
+        listItems.add(new ItemSet(a, b, c, e));
+        listItems.add(new ItemSet(b, c, e));
 
-        List<SortedSet<Item>> candidates = Lists.newArrayList();
-        for(SortedSet<Item> item : generators){
-            candidates.add(new TreeSet<>(item));
+        List<ItemSet> candidates = Lists.newArrayList();
+        for(ItemSet item : generators){
+            candidates.add(new ItemSet(item));
         }
 
-        SortedSet<Item>[] closes = new SortedSet[NB_ITEM];
-        closes[0]=new TreeSet<>(); closes[0].add(a); closes[0].add(c);
-        closes[1]=new TreeSet<>(); closes[1].add(b); closes[1].add(e);
-        closes[2]=new TreeSet<>(); closes[2].add(c);
-        closes[3]=new TreeSet<>(); closes[3].add(a); closes[3].add(c); closes[3].add(d);
-        closes[4]=new TreeSet<>(); closes[4].add(b); closes[4].add(e);
+        ItemSet[] closes = new ItemSet[NB_ITEM];
+        closes[0]=new ItemSet(a, c);
+        closes[1]=new ItemSet(b, e);
+        closes[2]=new ItemSet(c);
+        closes[3]=new ItemSet(a, c, d);
+        closes[4]=new ItemSet(b, e);
 
         int[] encounters = new int[]{3, 5, 5, 1, 5};
 
@@ -126,8 +122,8 @@ public class CloseTest {
         Collections.sort(result, comparator);
 
         for(int i = 0; i<result.size(); i++){
-            assertThat(result.get(i).getGenerators()).isEqualTo(generators[i]);
-            assertThat(result.get(i).getFerme()).isEqualTo(closes[i]);
+            assertThat((Iterable<? extends Item>) result.get(i).getGenerators()).isEqualTo(generators[i]);
+            assertThat((Iterable<? extends Item>) result.get(i).getClosure()).isEqualTo(closes[i]);
             assertThat(result.get(i).getEncounter()).isEqualTo(encounters[i]);
         }
     }

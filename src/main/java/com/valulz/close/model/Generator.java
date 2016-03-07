@@ -2,8 +2,6 @@ package com.valulz.close.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.IntStream;
 
 /**
@@ -11,26 +9,26 @@ import java.util.stream.IntStream;
  */
 public class Generator  {
 
-    private SortedSet<Item> generators;
-    private SortedSet<Item> ferme;
+    private ItemSet generators;
+    private ItemSet closure;
     private int encounter;
 
-    public Generator(SortedSet<Item> generators, SortedSet<Item> ferme) {
+    public Generator(ItemSet generators, ItemSet closure) {
 
-        if(generators == null || ferme == null){
-            throw new IllegalArgumentException("Generators and ferme cannot be null");
+        if(generators == null || closure == null){
+            throw new IllegalArgumentException("Generators and closure cannot be null");
         }
 
-        if(generators.size()<=0 || ferme.size() <=0){
+        if(generators.size()<=0 || closure.size() <=0){
             throw new IllegalArgumentException("Both Sets must have at least one item");
         }
 
         this.generators = generators;
-        this.ferme = ferme;
+        this.closure = closure;
         this.encounter = 1;
     }
 
-    public void newEncounter(SortedSet<Item> itemSet){
+    public void newEncounter(ItemSet itemSet){
 
         if(itemSet == null){
             throw new IllegalArgumentException("The given itemSet cannot be null");
@@ -41,10 +39,10 @@ public class Generator  {
         }
 
         encounter++;
-        ferme.retainAll(itemSet);
+        closure.retainAll(itemSet);
     }
 
-    public SortedSet<Item> genNewItemSet(SortedSet<Item> itemSet){
+    public ItemSet genNewItemSet(ItemSet itemSet){
 
         if(itemSet == null || itemSet.size() != generators.size()){
             throw new IllegalArgumentException();
@@ -52,7 +50,7 @@ public class Generator  {
 
         //Just concatenate, nothing in common
         if(generators.size() == 1){
-            SortedSet<Item> items = new TreeSet<>(generators);
+            ItemSet items = new ItemSet(generators);
             items.add(itemSet.last());
 
             return items;
@@ -65,7 +63,7 @@ public class Generator  {
         boolean isSimilar = IntStream.range(0, size-1).parallel().allMatch(i -> lGen.get(i).equals(lSet.get(i)));
 
         if(isSimilar){
-            SortedSet<Item> items = new TreeSet<>(generators);
+            ItemSet items = new ItemSet(generators);
             items.add(itemSet.last());
 
             return items;
@@ -74,12 +72,12 @@ public class Generator  {
         }
     }
 
-    public SortedSet<Item> getGenerators() {
+    public ItemSet getGenerators() {
         return generators;
     }
 
-    public SortedSet<Item> getFerme() {
-        return ferme;
+    public ItemSet getClosure() {
+        return closure;
     }
 
     public int getEncounter() {

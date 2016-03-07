@@ -2,10 +2,6 @@ package com.valulz.close.model;
 
 import org.junit.Test;
 
-import java.util.Random;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -14,25 +10,22 @@ public class GeneratorTest {
     @Test
     public void constructor_must_fail_if_the_generator_parameter_is_null() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
+        ItemSet items = new ItemSet(new Item("a"));
 
         try{
             //When
             new Generator(null, items);
             fail("Generators cant have a null parameter and should have thrown an IllegalArgumentException");
         }catch (IllegalArgumentException ex){
-
             //Then
-            assertThat(ex.getMessage()).isEqualTo("Generators and ferme cannot be null");
+            assertThat(ex.getMessage()).isEqualTo("Generators and closure cannot be null");
         }
     }
 
     @Test
-    public void constructor_must_fail_if_the_ferme_parameter_is_null() throws Exception {
+    public void constructor_must_fail_if_the_closure_parameter_is_null() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
+        ItemSet items = new ItemSet(new Item("a"));
 
         try{
             //When
@@ -41,18 +34,17 @@ public class GeneratorTest {
         }catch (IllegalArgumentException ex){
 
             //Then
-            assertThat(ex.getMessage()).isEqualTo("Generators and ferme cannot be null");
+            assertThat(ex.getMessage()).isEqualTo("Generators and closure cannot be null");
         }
     }
 
     @Test
     public void constructor_fail_if_generators_contains_no_item() throws Exception {
         //Given
-        SortedSet<Item> ferme = new TreeSet<>();
-        ferme.add(new Item("a"));
+        ItemSet closure = new ItemSet(new Item("a"));
 
         try{
-            new Generator(new TreeSet<>(), ferme);
+            new Generator(new ItemSet(), closure);
             fail("generators must have at least one item");
         }catch (IllegalArgumentException ex){
             assertThat(ex.getMessage()).isEqualTo("Both Sets must have at least one item");
@@ -60,45 +52,37 @@ public class GeneratorTest {
     }
 
     @Test
-    public void constructor_fail_if_ferme_contains_no_item() throws Exception {
+    public void constructor_fail_if_closure_contains_no_item() throws Exception {
         //Given
-        SortedSet<Item> generators = new TreeSet<>();
-        generators.add(new Item("a"));
+        ItemSet generators = new ItemSet(new Item("a"));
 
         try{
-            new Generator(generators, new TreeSet<>());
-            fail("ferme must have at least one item");
+            new Generator(generators, new ItemSet());
+            fail("closure must have at least one item");
         }catch (IllegalArgumentException ex){
             assertThat(ex.getMessage()).isEqualTo("Both Sets must have at least one item");
         }
     }
 
     @Test
-    public void constructor_must_fill_generators_ferme_and_encounter_attribute() throws Exception {
+    public void constructor_must_fill_generators_closure_and_encounter_attribute() throws Exception {
         //Given
-        TreeSet<Item> gen = new TreeSet<>();
-        TreeSet<Item> ferme = new TreeSet<>();
-
-        gen.add(new Item("Ceci"));
-        gen.add(new Item("Est"));
-        ferme.add(new Item("Un"));
-        ferme.add(new Item("Peu"));
-        ferme.add(new Item("Long"));
+        ItemSet gen = new ItemSet(new Item("Ceci"), new Item("Est"));
+        ItemSet closure = new ItemSet(new Item("Un"), new Item("Peu"), new Item("Long"));
 
         //When
-        Generator generator = new Generator(new TreeSet<>(gen), new TreeSet<>(ferme));
+        Generator generator = new Generator(new ItemSet(gen), new ItemSet(closure));
 
         //Then
-        assertThat(generator.getGenerators()).isEqualTo(gen);
-        assertThat(generator.getFerme()).isEqualTo(ferme);
+        assertThat((Iterable<? extends Item>) generator.getGenerators()).isEqualTo(gen);
+        assertThat((Iterable<? extends Item>) generator.getClosure()).isEqualTo(closure);
         assertThat(generator.getEncounter()).isEqualTo(1);
     }
 
     @Test
     public void newEncounter_fail_if_the_parameter_is_null() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
+        ItemSet items = new ItemSet(new Item("a"));
         Generator gen = new Generator(items, items);
 
         try{
@@ -115,13 +99,12 @@ public class GeneratorTest {
     @Test
     public void newEncounter_fail_if_the_parameter_is_empty() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
+        ItemSet items = new ItemSet(new Item("a"));
         Generator gen = new Generator(items, items);
 
         try{
             //When
-            gen.newEncounter(new TreeSet<>());
+            gen.newEncounter(new ItemSet());
             fail("The newEncounter method should have fail because of the empty parameter");
         } catch(IllegalArgumentException ex){
 
@@ -131,38 +114,31 @@ public class GeneratorTest {
     }
 
     @Test
-    public void newEncounter_increments_encounter_and_change_ferme() throws Exception {
+    public void newEncounter_increments_encounter_and_change_closure() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
-        SortedSet<Item> given = new TreeSet<>();
-        SortedSet<Item> parameter = new TreeSet<>();
-        SortedSet<Item> expected = new TreeSet<>();
-
         Item i1 = new Item("Ceci");
         Item i2 = new Item("Est");
         Item i3 = new Item("Un");
         Item i4 = new Item("Test");
 
-        given.add(i1); given.add(i2); given.add(i4);
-        parameter.add(i1); parameter.add(i3); parameter.add(i4);
-        expected.add(i1); expected.add(i4);
+        ItemSet given = new ItemSet(i1, i2, i4);
+        ItemSet parameter = new ItemSet(i1,i3,i4);
+        ItemSet expected = new ItemSet(i1, i4);
 
-        Generator gen = new Generator(items, given);
+        Generator gen = new Generator(new ItemSet(new Item("a")), given);
 
         //When
         gen.newEncounter(parameter);
 
         //Then
-        assertThat(gen.getFerme()).isEqualTo(expected);
+        assertThat((Iterable<? extends Item>) gen.getClosure()).isEqualTo(expected);
         assertThat(gen.getEncounter()).isEqualTo(2);
     }
 
     @Test
     public void genNewItemSet_fail_if_the_item_set_is_null() throws Exception {
         //Given
-        SortedSet<Item> items = new TreeSet<>();
-        items.add(new Item("a"));
+        ItemSet items = new ItemSet(new Item("a"));
         Generator generator = new Generator(items, items);
 
         try{
@@ -177,15 +153,12 @@ public class GeneratorTest {
     @Test
     public void getNewItemSet_fail_if_the_size_of_the_item_set_is_different_from_the_generator_size() throws Exception {
         //Given
-        SortedSet<Item> gen = new TreeSet<>();
-        gen.add(new Item("LOL"));
-        Random random = new Random();
-
+        ItemSet gen = new ItemSet(new Item("LOL"));
         Generator generator = new Generator(gen, gen);
 
         try {
             //When
-            generator.genNewItemSet(new TreeSet<>());
+            generator.genNewItemSet(new ItemSet());
             fail("getNewItemSet should have failed because the generator and the itemSet have two different size");
         }catch (IllegalArgumentException ignored){
             //Then
@@ -197,25 +170,18 @@ public class GeneratorTest {
         //Given
         Item a = new Item("a"); Item b = new Item("b");
 
-        SortedSet<Item> gene = new TreeSet<>();
-        gene.add(a);
+        ItemSet gene = new ItemSet(a);
+        ItemSet para = new ItemSet(b);
+        ItemSet expected = new ItemSet(a, b);
+        ItemSet closure = new ItemSet(a);
 
-        SortedSet<Item> para = new TreeSet<>();
-        para.add(b);
-
-        SortedSet<Item> expected = new TreeSet<>();
-        expected.add(a); expected.add(b);
-
-        SortedSet<Item> ferme = new TreeSet<>();
-        ferme.add(new Item("a"));
-
-        Generator generator = new Generator(gene, ferme);
+        Generator generator = new Generator(gene, closure);
 
         //When
-        final SortedSet<Item> items = generator.genNewItemSet(para);
+        final ItemSet items = generator.genNewItemSet(para);
 
         //Then
-        assertThat(items).isEqualTo(expected);
+        assertThat((Iterable<? extends Item>) items).isEqualTo(expected);
     }
 
     @Test
@@ -223,22 +189,16 @@ public class GeneratorTest {
         //Given
         Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");
 
-        SortedSet<Item> gene = new TreeSet<>();
-        gene.add(a); gene.add(b);
+        ItemSet gene = new ItemSet(a, b);
+        ItemSet para = new ItemSet(b, c);
 
-        SortedSet<Item> para = new TreeSet<>();
-        para.add(b); para.add(c);
-
-        SortedSet<Item> ferme = new TreeSet<>();
-        ferme.add(new Item("a"));
-
-        Generator generator = new Generator(gene, ferme);
+        Generator generator = new Generator(gene, new ItemSet(a));
 
         //When
-        final SortedSet<Item> items = generator.genNewItemSet(para);
+        final ItemSet items = generator.genNewItemSet(para);
 
         //Then
-        assertThat(items).isEqualTo(null);
+        assertThat((Iterable<? extends Item>) items).isEqualTo(null);
     }
 
     @Test
@@ -246,25 +206,17 @@ public class GeneratorTest {
         //Given
         Item a = new Item("a"); Item b = new Item("b"); Item c = new Item("c");Item d = new Item("d");
 
-        SortedSet<Item> gene = new TreeSet<>();
-        gene.add(a); gene.add(b); gene.add(c);
+        ItemSet gene = new ItemSet(a, b, c);
+        ItemSet para = new ItemSet(a, b, d);
+        ItemSet expected = new ItemSet(a, b, c, d);
 
-        SortedSet<Item> para = new TreeSet<>();
-        para.add(a); para.add(b); para.add(d);
-
-        SortedSet<Item> expected = new TreeSet<>();
-        expected.add(a);expected.add(b);expected.add(c);expected.add(d);
-
-        SortedSet<Item> ferme = new TreeSet<>();
-        ferme.add(new Item("a"));
-
-        Generator generator = new Generator(gene, ferme);
+        Generator generator = new Generator(gene, new ItemSet(a));
 
         //When
-        final SortedSet<Item> items = generator.genNewItemSet(para);
+        final ItemSet items = generator.genNewItemSet(para);
 
         //Then
-        assertThat(items).isEqualTo(expected);
+        assertThat((Iterable<? extends Item>) items).isEqualTo(expected);
 
     }
 }
