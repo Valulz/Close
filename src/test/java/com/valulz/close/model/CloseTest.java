@@ -183,16 +183,16 @@ public class CloseTest {
         Close close = new Close();
 
         List<Generator> generators = Lists.newArrayList();
-        generators.add(new Generator(new ItemSet(a, b), new ItemSet(a, b)));
+        generators.add(new Generator(new ItemSet(c, d), new ItemSet(c, d)));
+        generators.add(new Generator(new ItemSet(b, d), new ItemSet(a, b)));
         generators.add(new Generator(new ItemSet(b, c), new ItemSet(b, c)));
         generators.add(new Generator(new ItemSet(a, c), new ItemSet(a, c)));
-        generators.add(new Generator(new ItemSet(c, d), new ItemSet(c, d)));
 
         //When
         final List<ItemSet> itemSets = close.generateCloseKPlus1(generators, Lists.newArrayList());
 
         //Then
-        assertThat(itemSets).containsExactly(new ItemSet(a, b, c));
+        assertThat(itemSets).containsExactly(new ItemSet(b, c, d));
     }
 
     @Test
