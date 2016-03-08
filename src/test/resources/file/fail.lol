@@ -1,0 +1,1 @@
+This file is meant to test that the Close algorithm cannot open it.
