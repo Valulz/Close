@@ -95,9 +95,39 @@ public class CloseParserTest {
     }
 
     @Test
+    public void parseClose_should_fail_if_the_specified_generators_is_null() throws Exception {
+        //Given
+        CloseParser parser = new CloseParser();
+
+        try {
+            //When
+            parser.parseRules(Lists.newArrayList(), null);
+            fail("The parseRule should have failed because of the null specified generators");
+        } catch (IllegalArgumentException ignored){
+            //Then
+        }
+    }
+
+    @Test
+    public void parseClose_should_fail_if_the_specified_corpus_is_null() throws Exception {
+        //Given
+        CloseParser parser = new CloseParser();
+
+        try {
+            //When
+            parser.parseRules(null, Lists.newArrayList());
+            fail("The parseRule should have failed because of the null specified corpus");
+        } catch (IllegalArgumentException ignored){
+            //Then
+        }
+    }
+
+
+
+    @Test
     public void parseClose_return_a_String_that_represents_the_rules_extracted_from_the_generators() throws Exception {
         //Given
-        Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");Item e=new Item("e");
+        Item a=new Item("a");Item b=new Item("b");Item c=new Item("c");Item d=new Item("d");Item e=new Item("e");
         List<Generator> generators = Lists.newArrayList();
 
         ItemSet[] gens = new ItemSet[]{new ItemSet(a), new ItemSet(b), new ItemSet(c), new ItemSet(e),
@@ -116,11 +146,13 @@ public class CloseParserTest {
             generators.add(gen);
         }
 
+        List<ItemSet> corpus = Lists.newArrayList(new ItemSet(a, c, d), new ItemSet(b, c, e), new ItemSet(a, b, c, e), new ItemSet(b, e),
+                new ItemSet(a, b, c, e), new ItemSet(b, c, e));
+
         CloseParser parser = new CloseParser();
-        int size = 6;
 
         //When
-        final String s = parser.parseRules(generators, 6);
+        final String s = parser.parseRules(corpus, generators);
 
         //Then
         System.out.println(s);
