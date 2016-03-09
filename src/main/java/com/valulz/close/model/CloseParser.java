@@ -67,29 +67,38 @@ public class CloseParser {
             throw new IllegalArgumentException("The generators and corpus cannot be null");
         }
 
-        String rules = "Résultat de l'agorithme Close\n";
-        rules += "Extraction des règles exactes : \n\n";
         int corpusSize = corpus.size();
 
-        for(Generator gen : generators){
-            ItemSet rhs = new ItemSet(gen.getClosure());
-            rhs.removeAll(gen.getGenerators());
+        String rules = "Résultat de l'agorithme Close\n";
+        rules += "Extraction des règles exactes : \n\n";
+
+        //Extract the exact rules
+        for(Generator generator : generators){
+
+            //Extraction of the Right-Hand Side (close - lhs)
+            ItemSet rhs = new ItemSet(generator.getClosure());
+            rhs.removeAll(generator.getGenerators());
+
+            //If the RHS is empty, it's because the rhs.equals(generator), so no rules to extract
             if(rhs.isEmpty()) continue;
 
-            double genSupport = (double) gen.getEncounter() / corpusSize;
+            double genSupport = (double) generator.getEncounter() / corpusSize;
             double rhsSupport = (double) corpus.parallelStream().filter(itemSet -> itemSet.containsAll(rhs)).count() / corpusSize;
 
-            rules += "\t" + formatItemSet(gen.getGenerators())
-                    + " -> "+formatItemSet(rhs)
-                    + " (sup : "+ String.format("%.2f", genSupport)
+            rules += "\t" + formatItemSet(generator.getGenerators())
+                    + "-> "+formatItemSet(rhs)
+                    + "(sup : "+ String.format("%.2f", genSupport)
                     + " ; lift : "+String.format("%.2f", (genSupport / (genSupport * rhsSupport))) +")\n";
         }
 
-        rules += "\n\n Extraction des règles approximatives \n\n";
+        rules += "\nExtraction des règles approximatives\n\n";
 
+        //Extract the approximate rules
         for(int i = 0; i<generators.size(); i++){
+
             Generator lhs = generators.get(i);  //The Left-Hand Side
 
+            //To prevent a rule duplication
             List<ItemSet> closureMade = new ArrayList<>();
             closureMade.add(lhs.getClosure());
 
@@ -115,17 +124,13 @@ public class CloseParser {
                     double lhsSupport = (double) lhs.getEncounter() / corpusSize;
                     double rhsSupport = (double) corpus.parallelStream().filter(itemSet -> itemSet.containsAll(rhs)).count() / corpusSize;
 
-                    //TODO revoir nom variable
-                    //TODO faire algo plus clair.
-                    //TODO optimiser le tout
-
                     rules += "\t" + formatItemSet(lhs.getGenerators())
-                            + " -> "+formatItemSet(rhs)
-                            + " (sup : "+String.format("%.2f",ruleSupport)
-                            + " conf : " +String.format("%.2f", (ruleSupport / lhsSupport))
+                            + "-> "+formatItemSet(rhs)
+                            + "(sup : "+String.format("%.2f",ruleSupport)
+                            + " ; conf : " +String.format("%.2f", (ruleSupport / lhsSupport))
                             + " ; lift : "+String.format("%.2f",(ruleSupport / (lhsSupport * rhsSupport))) +")\n";
-
                 }
+
                 closureMade.add(close.getClosure());
             }
         }

@@ -122,8 +122,6 @@ public class CloseParserTest {
         }
     }
 
-
-
     @Test
     public void parseClose_return_a_String_that_represents_the_rules_extracted_from_the_generators() throws Exception {
         //Given
@@ -151,13 +149,32 @@ public class CloseParserTest {
 
         CloseParser parser = new CloseParser();
 
+        String expected = "Résultat de l'agorithme Close\nExtraction des règles exactes : \n\n";
+        expected += "\ta -> c (sup : 0,50 ; lift : 1,20)\n";
+        expected += "\tb -> e (sup : 0,83 ; lift : 1,20)\n";
+        expected += "\te -> b (sup : 0,83 ; lift : 1,20)\n";
+        expected += "\ta b -> c e (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\ta e -> b c (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\tb c -> e (sup : 0,67 ; lift : 1,20)\n";
+        expected += "\tc e -> b (sup : 0,67 ; lift : 1,20)\n";
+
+        expected += "\nExtraction des règles approximatives\n\n";
+        expected += "\ta -> b c e (sup : 0,33 ; conf : 0,67 ; lift : 1,00)\n";
+        expected += "\tb -> a c e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tb -> c e (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\tc -> a (sup : 0,50 ; conf : 0,60 ; lift : 1,20)\n";
+        expected += "\tc -> a b e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tc -> b e (sup : 0,67 ; conf : 0,80 ; lift : 0,96)\n";
+        expected += "\te -> a b c (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\te -> b c (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\tb c -> a e (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+        expected += "\tc e -> a b (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+
         //When
-        final String s = parser.parseRules(corpus, generators);
+        final String result = parser.parseRules(corpus, generators);
 
         //Then
-        System.out.println(s);
-
-
+        assertThat(result).isEqualTo(expected);
 
     }
 }
