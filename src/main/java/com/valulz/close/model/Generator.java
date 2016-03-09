@@ -31,12 +31,12 @@ public class Generator  {
             throw new IllegalArgumentException("Generators and closure cannot be null");
         }
 
-        if(generators.size()<=0 || closure.size() <=0){
+        if(generators.isEmpty() || closure.isEmpty()){
             throw new IllegalArgumentException("Both Sets must have at least one item");
         }
 
-        this.generators = generators;
-        this.closure = closure;
+        this.generators = new ItemSet(generators);
+        this.closure = new ItemSet(closure);
         this.encounter = 1;
     }
 
