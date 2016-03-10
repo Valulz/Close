@@ -53,13 +53,12 @@ public class CloseParser {
             }
 
             ItemSet itemSet = new ItemSet();
-            IntStream.range(1, lineSplit.length).forEach(i -> itemSet.add(new Item(lineSplit[i])));
+            IntStream.range(1, lineSplit.length).forEach(i -> itemSet.add(new Item(lineSplit[i].trim())));
             itemSets.add(itemSet);
         });
 
         return itemSets;
     }
-
 
     public String parseRules(List<ItemSet> corpus, List<Generator> generators){
 
@@ -138,9 +137,30 @@ public class CloseParser {
         return rules;
     }
 
+    public String executeClose(File file, double minSupport){
+
+        List<ItemSet> corpus;
+        Close close;
+
+        try {
+            corpus = parseFile(file);
+        } catch (IOException e) {
+            //TODO handle it better
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+        close = new Close();
+
+        List<Generator> generators = close.executeAlgorithm(corpus, minSupport);
+
+        return parseRules(corpus, generators);
+    }
+
     private String formatItemSet(ItemSet itemSet){
         String s = "";
         for(Item item : itemSet){
+            //TODO revoir cela
             s+=item.getName() + " ";
         }
         return s;
