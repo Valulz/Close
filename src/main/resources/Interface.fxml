@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.valulz.close.control.SupportStringConverter?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" layoutX="3.0" prefHeight="487.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0_65" fx:controller="com.valulz.close.controller.InterfaceController">
+ <top>
+
+     <VBox>
+         <Button prefWidth="Infinity" text="Ouvrir" onAction="#openFile"/>
+         <Spinner prefWidth="Infinity" editable="true" >
+             <valueFactory>
+                 <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="support">
+                     <amountToStepBy>0.1</amountToStepBy>
+                     <max>1</max>
+                     <min>0</min>
+                     <converter>
+                         <SupportStringConverter />
+                     </converter>
+                 </javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory>
+             </valueFactory>
+         </Spinner>
+
+         <Button mnemonicParsing="false" prefWidth="Infinity" text="Executer Algorithme" />
+     </VBox>
+ </top>
+ <bottom>
+    <Button mnemonicParsing="false" text="Enregistrer" BorderPane.alignment="CENTER" prefWidth="Infinity" />
+ </bottom>
+ <center>
+    <TextArea editable="false" prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER" />
+ </center>
+</BorderPane>
