@@ -29,6 +29,6 @@
     <Button fx:id="btnSaveResult" mnemonicParsing="false" text="Enregistrer" BorderPane.alignment="CENTER" prefWidth="Infinity" onAction="#saveResult" disable="true"/>
  </bottom>
  <center>
-    <TextArea fx:id="txtDisplay" editable="false" prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER" disable="true" />
+    <TextArea fx:id="txtDisplay" editable="false" prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER" />
  </center>
 </BorderPane>

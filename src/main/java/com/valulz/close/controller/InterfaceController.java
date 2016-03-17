@@ -1,9 +1,8 @@
 package com.valulz.close.controller;
 
+import com.valulz.close.model.CloseParser;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -44,17 +43,33 @@ public class InterfaceController {
         fileChooser.setTitle("Choisir Fichier");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier texte","*.txt"));
 
-        this.file = fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog(stage);
 
-        stage.setTitle(file.getName());
-        btnExecuteClose.setDisable(false);
+        if(file != null) {
+            this.file = file;
+            stage.setTitle(file.getName());
+            btnExecuteClose.setDisable(false);
+        }
+
    }
 
     /**
      * Execute the Close algorithm on the file chosen by the user.
      */
     public void executeClose() {
+        if(file == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez préciser un fichier pour executer l'algorithme");
+            alert.showAndWait()
+                .filter(response -> response == ButtonType.OK);
 
+            return;
+        }
+
+        CloseParser closeParser = new CloseParser();
+        String result = closeParser.executeClose(file, txtSupport.getValue());
+
+        txtDisplay.setText(result);
+        btnSaveResult.setDisable(false);
     }
 
     /**
