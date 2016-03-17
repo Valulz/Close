@@ -9,7 +9,7 @@
 
      <VBox>
          <Button prefWidth="Infinity" text="Ouvrir" onAction="#openFile"/>
-         <Spinner prefWidth="Infinity" editable="true" >
+         <Spinner prefWidth="Infinity" editable="true" fx:id="spinner" >
              <valueFactory>
                  <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="txtSupport">
                      <amountToStepBy>0.1</amountToStepBy>

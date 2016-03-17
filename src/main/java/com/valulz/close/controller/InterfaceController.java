@@ -8,11 +8,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * This class control the scene Interface.fxml.
  */
 public class InterfaceController {
+
+    @FXML
+    private Spinner spinner;
 
     @FXML
     private BorderPane borderPane;
@@ -43,6 +48,10 @@ public class InterfaceController {
         fileChooser.setTitle("Choisir Fichier");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier texte","*.txt"));
 
+        if(this.file != null){
+            fileChooser.setInitialDirectory(this.file.getParentFile());
+        }
+
         File file = fileChooser.showOpenDialog(stage);
 
         if(file != null) {
@@ -66,6 +75,7 @@ public class InterfaceController {
         }
 
         CloseParser closeParser = new CloseParser();
+
         String result = closeParser.executeClose(file, txtSupport.getValue());
 
         txtDisplay.setText(result);
@@ -77,5 +87,26 @@ public class InterfaceController {
      */
     public void saveResult() {
 
+        if(txtDisplay.getText().isEmpty()){
+            return;
+        }
+
+        Stage stage = (Stage) borderPane.getScene().getWindow();
+
+        String results = txtDisplay.getText();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier Texte", "*.txt"));
+        File fileSave = fileChooser.showSaveDialog(stage);
+
+        if(fileSave != null){
+            try {
+                FileWriter writer = new FileWriter(fileSave);
+                writer.write(results);
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
