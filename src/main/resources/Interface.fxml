@@ -11,7 +11,7 @@
          <Button prefWidth="Infinity" text="Ouvrir" onAction="#openFile"/>
          <Spinner prefWidth="Infinity" editable="true" >
              <valueFactory>
-                 <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="support">
+                 <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="txtSupport">
                      <amountToStepBy>0.1</amountToStepBy>
                      <max>1</max>
                      <min>0</min>
@@ -22,13 +22,13 @@
              </valueFactory>
          </Spinner>
 
-         <Button mnemonicParsing="false" prefWidth="Infinity" text="Executer Algorithme" />
+         <Button fx:id="btnExecuteClose" mnemonicParsing="false" prefWidth="Infinity" text="Executer Algorithme" onAction="#executeClose" disable="true" />
      </VBox>
  </top>
  <bottom>
-    <Button mnemonicParsing="false" text="Enregistrer" BorderPane.alignment="CENTER" prefWidth="Infinity" />
+    <Button fx:id="btnSaveResult" mnemonicParsing="false" text="Enregistrer" BorderPane.alignment="CENTER" prefWidth="Infinity" onAction="#saveResult" disable="true"/>
  </bottom>
  <center>
-    <TextArea editable="false" prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER" />
+    <TextArea fx:id="txtDisplay" editable="false" prefHeight="Infinity" prefWidth="Infinity" BorderPane.alignment="CENTER" disable="true" />
  </center>
 </BorderPane>
