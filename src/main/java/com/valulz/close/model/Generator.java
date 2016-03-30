@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  *     <li>encounter represents how many times the generator has been found</li>
  * </ul>
  */
-public class Generator  {
+class Generator  {
 
     private ItemSet generators;
     private ItemSet closure;
@@ -25,7 +25,7 @@ public class Generator  {
      * @param closure the closure of the generator.
      * @throws IllegalArgumentException if generators or closure are either null or empty
      */
-    public Generator(ItemSet generators, ItemSet closure) {
+    Generator(ItemSet generators, ItemSet closure) {
 
         if(generators == null || closure == null){
             throw new IllegalArgumentException("Generators and closure cannot be null");
@@ -45,7 +45,7 @@ public class Generator  {
      * @param itemSet an ItemSet
      * @throws IllegalArgumentException if the ItemSet is null, or does not contain, at least, the generator.
      */
-    public void newEncounter(ItemSet itemSet){
+    void newEncounter(ItemSet itemSet){
 
         if(itemSet == null){
             throw new IllegalArgumentException("The given itemSet cannot be null");
@@ -66,7 +66,7 @@ public class Generator  {
      * @throws IllegalArgumentException if itemSet is null or empty.
      * @return the concatenation of the generator and the itemSet, or null if the itemSet does not contain the generator
      */
-    public ItemSet createNewGenerator(ItemSet itemSet){
+    ItemSet createNewGenerator(ItemSet itemSet){
 
         if(itemSet == null || itemSet.size() != generators.size()){
             throw new IllegalArgumentException();
@@ -89,15 +89,15 @@ public class Generator  {
         return null;
     }
 
-    public ItemSet getGenerators() {
+    ItemSet getGenerators() {
         return generators;
     }
 
-    public ItemSet getClosure() {
+    ItemSet getClosure() {
         return closure;
     }
 
-    public int getEncounter() {
+    int getEncounter() {
         return encounter;
     }
 }

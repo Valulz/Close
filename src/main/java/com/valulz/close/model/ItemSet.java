@@ -10,14 +10,14 @@ import java.util.TreeSet;
  *
  * @author Valentin Desportes
  */
-public class ItemSet extends TreeSet<Item> implements Comparable<ItemSet>{
+class ItemSet extends TreeSet<Item> implements Comparable<ItemSet>{
 
     /**
      * Initialize an ItemSet with the items
      * @throws IllegalArgumentException if one of the items is null
      * @param items a list of Item
      */
-    public ItemSet(Item... items){
+    ItemSet(Item... items){
         super();
 
         if(items == null){
@@ -37,7 +37,7 @@ public class ItemSet extends TreeSet<Item> implements Comparable<ItemSet>{
      * @param itemSet the ItemSet whose element are to be placed into this set
      * @throws IllegalArgumentException if the specified itemSet is null
      */
-    public ItemSet(ItemSet itemSet) {
+    ItemSet(ItemSet itemSet) {
         super();
         if(itemSet == null){
             throw new IllegalArgumentException("ItemSet cannot be null");

@@ -11,17 +11,7 @@ import java.util.stream.IntStream;
 public class CloseParser {
 
     private final String ITEM_SEPARATOR = "\\|";
-    private final String RULE_SEPARATOR = ";";
-
-    private List<ItemSet> corpus;
-    private List<Generator> itemsLvlv1;
-
-    public CloseParser() {
-        corpus = new ArrayList<>();
-        itemsLvlv1 = new ArrayList<>();
-    }
-
-
+    private static final String RULE_SEPARATOR = ";";
 
 
     private static String getFileExtension(File file) {
@@ -39,7 +29,7 @@ public class CloseParser {
      * @throws IllegalArgumentException
      *          if the file is null, is not open in read mode, is not .txt file or does not respect teh format 'id|item|...|item'
      */
-    public List<ItemSet> parseFile(File file) throws IOException {
+    List<ItemSet> parseFile(File file) throws IOException {
 
         if(file == null){
             throw new IllegalArgumentException("File cannot be null");
@@ -72,7 +62,7 @@ public class CloseParser {
         return itemSets;
     }
 
-    public String parseRules(List<ItemSet> corpus, List<Generator> generators){
+    String parseRules(List<ItemSet> corpus, List<Generator> generators){
 
         if(generators == null || corpus == null){
             throw new IllegalArgumentException("The generators and corpus cannot be null");

@@ -34,7 +34,7 @@ public class Item implements Comparable<Item> {
         return name.hashCode();
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -43,7 +43,7 @@ public class Item implements Comparable<Item> {
      * @throws IllegalArgumentException if the {@code name} is null.
      * @param name the new name of the Item.
      */
-    public void setName(String name) {
+    void setName(String name) {
         if(name == null){
             throw new IllegalArgumentException("The name of the item must not be null");
         }

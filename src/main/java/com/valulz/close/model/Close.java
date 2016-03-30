@@ -16,7 +16,7 @@ public class Close {
      * @throws IllegalArgumentException if candidates or listItem are null or empty
      * @return a list of generators created by the association of the candidates and its closure.
      */
-    public List<Generator> closure(List<ItemSet> candidates, List<ItemSet> corpus){
+    List<Generator> closure(List<ItemSet> candidates, List<ItemSet> corpus){
 
         if(candidates == null || corpus == null){
             throw new IllegalArgumentException();
@@ -48,7 +48,7 @@ public class Close {
      * @param closure the list of all the closure found
      * @return the list of the generator k+1
      */
-    public List<ItemSet> generateClose(List<Generator> generatorsK, List<ItemSet> closure){
+    List<ItemSet> generateClose(List<Generator> generatorsK, List<ItemSet> closure){
 
         if(generatorsK == null || closure == null){
             throw new IllegalArgumentException("Generators and Closure cannot be null");
@@ -88,7 +88,7 @@ public class Close {
      * @param minSupport the support minimal.
      * @return a list of generator
      */
-    public List<Generator> executeAlgorithm(List<ItemSet> corpus, double minSupport){
+    List<Generator> executeAlgorithm(List<ItemSet> corpus, double minSupport){
 
         if(corpus == null){
             throw new IllegalArgumentException("Corpus cannot be null");
