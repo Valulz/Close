@@ -59,6 +59,10 @@ class Generator  {
         closure.retainAll(itemSet);
     }
 
+    ItemSet createNewGenerator(Generator other){
+        return this.createNewGenerator(other.getGenerators());
+    }
+
     /**
      * Generate a new generator from the current one and the given itemSet.
      *
@@ -74,6 +78,7 @@ class Generator  {
 
         List<Item> listGenerator = new ArrayList<>(generators);
         List<Item> listItemSet = new ArrayList<>(itemSet);
+
 
         boolean hasSimilarBegin = IntStream
                 .range(0, generators.size()-1)

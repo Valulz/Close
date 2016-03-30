@@ -58,24 +58,26 @@ public class Close {
         Collections.sort(closure);
         Collections.sort(generatorsK, (o1, o2) -> o1.getGenerators().compareTo(o2.getGenerators()));
 
-        for(int i = 0; i<generatorsK.size()-1; i++){
-            for(int j = i+1; j<generatorsK.size(); j++){
-                ItemSet generator = generatorsK.get(i)
-                    .createNewGenerator(generatorsK.get(j).getGenerators());
+        int generatorSize = generatorsK.size();
 
-                if(generator == null)   break;
+        for(int i = 0; i<generatorSize; i++){
+            for(int j=i+1; j<generatorSize; j++){
+                Generator a = generatorsK.get(i);
+                Generator b = generatorsK.get(j);
 
-                boolean isContained = false;
-                for(ItemSet close : closure){
-                    if(close.containsAll(generator)){
-                        isContained = true;
-                        break;
-                    }
-                }
+                ItemSet result = a.createNewGenerator(b);
+                if(result != null)
+                    generatorsKPlus1.add(result);
+            }
+        }
 
-                if(isContained) continue;
-
-                generatorsKPlus1.add(generator);
+        Iterator<ItemSet> iterator = generatorsKPlus1.iterator();
+        while(iterator.hasNext()){
+            ItemSet next = iterator.next();
+            if(closure
+                    .parallelStream()
+                    .anyMatch(close -> close.containsAll(next))){
+                iterator.remove();
             }
         }
 

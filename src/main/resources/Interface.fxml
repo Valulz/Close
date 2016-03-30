@@ -11,8 +11,12 @@
          <Button prefWidth="Infinity" text="Ouvrir" onAction="#openFile"/>
          <Spinner prefWidth="Infinity" editable="true" fx:id="spinner" >
              <valueFactory>
-                 <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="txtSupport">
+                 <fx:define>
+                     <java.lang.Double fx:id="def_spinner" fx:value="0.5" />
+                 </fx:define>
+                 <javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory fx:id="txtSupport" value="$def_spinner">
                      <amountToStepBy>0.1</amountToStepBy>
+
                      <max>1</max>
                      <min>0</min>
                      <converter>

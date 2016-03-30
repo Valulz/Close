@@ -144,7 +144,7 @@ public class GeneratorTest {
 
         try{
             //When
-            generator.createNewGenerator(null);
+            generator.createNewGenerator((ItemSet)null);
             fail("createNewGenerator should have failed because of the null parameter");
         } catch (IllegalArgumentException ignored){
             //Then

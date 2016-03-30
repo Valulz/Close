@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 
 public class SupportStringConverter extends StringConverter<Double> {
-    private final DecimalFormat df = new DecimalFormat("#.######");
+    private final DecimalFormat df = new DecimalFormat("#.###");
 
     public SupportStringConverter() {
     }
