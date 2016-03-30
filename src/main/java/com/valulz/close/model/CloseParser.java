@@ -147,8 +147,6 @@ public class CloseParser {
         try {
             corpus = parseFile(file);
         } catch (IOException e) {
-            //TODO handle it better
-            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
 

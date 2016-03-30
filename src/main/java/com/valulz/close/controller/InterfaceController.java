@@ -74,12 +74,21 @@ public class InterfaceController {
             return;
         }
 
+        txtDisplay.setText("Execution de l'algorithme ....");
+
         CloseParser closeParser = new CloseParser();
 
-        String result = closeParser.executeClose(file, txtSupport.getValue());
+        String result;
+        try{
+            result = closeParser.executeClose(file, txtSupport.getValue());
 
-        txtDisplay.setText(result);
-        btnSaveResult.setDisable(false);
+            txtDisplay.setText(result);
+            btnSaveResult.setDisable(false);
+        } catch(IllegalArgumentException ex){
+            txtDisplay.setText("Erreur lors de l'exécution de l'algorithme Close");
+            new Alert(Alert.AlertType.ERROR, ex.getMessage()).showAndWait().filter(response -> response == ButtonType.OK);
+        }
+
     }
 
     /**
