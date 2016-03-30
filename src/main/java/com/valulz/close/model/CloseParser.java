@@ -11,6 +11,18 @@ import java.util.stream.IntStream;
 public class CloseParser {
 
     private final String ITEM_SEPARATOR = "\\|";
+    private final String RULE_SEPARATOR = ";";
+
+    private List<ItemSet> corpus;
+    private List<Generator> itemsLvlv1;
+
+    public CloseParser() {
+        corpus = new ArrayList<>();
+        itemsLvlv1 = new ArrayList<>();
+    }
+
+
+
 
     private static String getFileExtension(File file) {
         String fileName = file.getName();
@@ -159,10 +171,13 @@ public class CloseParser {
 
     private String formatItemSet(ItemSet itemSet){
         String s = "";
-        for(Item item : itemSet){
-            //TODO revoir cela
-            s+=item.getName() + " ";
+        ItemSet copy = new ItemSet(itemSet);
+
+        while(copy.size() > 1){
+            s += copy.pollFirst().getName() + RULE_SEPARATOR+" ";
         }
+        s += copy.pollFirst().getName() + " ";
+
         return s;
     }
 

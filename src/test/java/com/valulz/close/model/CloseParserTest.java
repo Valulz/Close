@@ -153,22 +153,22 @@ public class CloseParserTest {
         expected += "\ta -> c (sup : 0,50 ; lift : 1,20)\n";
         expected += "\tb -> e (sup : 0,83 ; lift : 1,20)\n";
         expected += "\te -> b (sup : 0,83 ; lift : 1,20)\n";
-        expected += "\ta b -> c e (sup : 0,33 ; lift : 1,50)\n";
-        expected += "\ta e -> b c (sup : 0,33 ; lift : 1,50)\n";
-        expected += "\tb c -> e (sup : 0,67 ; lift : 1,20)\n";
-        expected += "\tc e -> b (sup : 0,67 ; lift : 1,20)\n";
+        expected += "\ta; b -> c; e (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\ta; e -> b; c (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\tb; c -> e (sup : 0,67 ; lift : 1,20)\n";
+        expected += "\tc; e -> b (sup : 0,67 ; lift : 1,20)\n";
 
         expected += "\nExtraction des règles approximatives\n\n";
-        expected += "\ta -> b c e (sup : 0,33 ; conf : 0,67 ; lift : 1,00)\n";
-        expected += "\tb -> a c e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\tb -> c e (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\ta -> b; c; e (sup : 0,33 ; conf : 0,67 ; lift : 1,00)\n";
+        expected += "\tb -> a; c; e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tb -> c; e (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
         expected += "\tc -> a (sup : 0,50 ; conf : 0,60 ; lift : 1,20)\n";
-        expected += "\tc -> a b e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\tc -> b e (sup : 0,67 ; conf : 0,80 ; lift : 0,96)\n";
-        expected += "\te -> a b c (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\te -> b c (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
-        expected += "\tb c -> a e (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
-        expected += "\tc e -> a b (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+        expected += "\tc -> a; b; e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tc -> b; e (sup : 0,67 ; conf : 0,80 ; lift : 0,96)\n";
+        expected += "\te -> a; b; c (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\te -> b; c (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\tb; c -> a; e (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+        expected += "\tc; e -> a; b (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
 
         //When
         final String result = parser.parseRules(corpus, generators);
@@ -190,22 +190,22 @@ public class CloseParserTest {
         expected += "\ta -> c (sup : 0,50 ; lift : 1,20)\n";
         expected += "\tb -> e (sup : 0,83 ; lift : 1,20)\n";
         expected += "\te -> b (sup : 0,83 ; lift : 1,20)\n";
-        expected += "\ta b -> c e (sup : 0,33 ; lift : 1,50)\n";
-        expected += "\ta e -> b c (sup : 0,33 ; lift : 1,50)\n";
-        expected += "\tb c -> e (sup : 0,67 ; lift : 1,20)\n";
-        expected += "\tc e -> b (sup : 0,67 ; lift : 1,20)\n";
+        expected += "\ta; b -> c; e (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\ta; e -> b; c (sup : 0,33 ; lift : 1,50)\n";
+        expected += "\tb; c -> e (sup : 0,67 ; lift : 1,20)\n";
+        expected += "\tc; e -> b (sup : 0,67 ; lift : 1,20)\n";
 
         expected += "\nExtraction des règles approximatives\n\n";
-        expected += "\ta -> b c e (sup : 0,33 ; conf : 0,67 ; lift : 1,00)\n";
-        expected += "\tb -> a c e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\tb -> c e (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\ta -> b; c; e (sup : 0,33 ; conf : 0,67 ; lift : 1,00)\n";
+        expected += "\tb -> a; c; e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tb -> c; e (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
         expected += "\tc -> a (sup : 0,50 ; conf : 0,60 ; lift : 1,20)\n";
-        expected += "\tc -> a b e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\tc -> b e (sup : 0,67 ; conf : 0,80 ; lift : 0,96)\n";
-        expected += "\te -> a b c (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
-        expected += "\te -> b c (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
-        expected += "\tb c -> a e (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
-        expected += "\tc e -> a b (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+        expected += "\tc -> a; b; e (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\tc -> b; e (sup : 0,67 ; conf : 0,80 ; lift : 0,96)\n";
+        expected += "\te -> a; b; c (sup : 0,33 ; conf : 0,40 ; lift : 1,20)\n";
+        expected += "\te -> b; c (sup : 0,67 ; conf : 0,80 ; lift : 1,20)\n";
+        expected += "\tb; c -> a; e (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
+        expected += "\tc; e -> a; b (sup : 0,33 ; conf : 0,50 ; lift : 1,50)\n";
 
         //When
         final String rules = parser.executeClose(file, 2./6);
@@ -214,17 +214,4 @@ public class CloseParserTest {
         assertThat(rules).isEqualTo(expected);
     }
 
-    @Test
-    @SuppressWarnings("ConstantConditions")
-    public void test_teacher_file() throws Exception {
-        //Given
-        ClassLoader loader = getClass().getClassLoader();
-        File file = new File(loader.getResource("file/ACLOSE_pour_test.txt").getFile());
-
-        CloseParser parser = new CloseParser();
-
-        System.out.println(parser.executeClose(file, .01));
-
-
-    }
 }
